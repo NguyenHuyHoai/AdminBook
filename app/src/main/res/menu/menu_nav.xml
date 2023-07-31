@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_book"
+            android:title="@string/tv_listBook"
+            android:icon="@drawable/icon_book"
+            />
+
+        <item
+            android:id="@+id/nav_genres"
+            android:title="@string/tv_listGenres"
+            android:icon="@drawable/icon_category"
+            />
+
+        <item
+            android:id="@+id/nav_user"
+            android:title="@string/tv_listUser"
+            android:icon="@drawable/icon_user"
+            />
+    </group>
+
+    <item android:title="@string/tv_Account">
+        <menu>
+            <item
+                android:id="@+id/nav_myproject"
+                android:title="@string/tv_myAccount"
+                android:icon="@drawable/icon_myaccount"
+                android:checkable="true"
+                />
+
+            <item
+                android:id="@+id/nav_changePW"
+                android:title="@string/tv_changePW"
+                android:icon="@drawable/icon_lock"
+                android:checkable="true"
+                />
+
+            <item
+                android:id="@+id/nav_signout"
+                android:title="@string/tv_signout"
+                android:icon="@drawable/icon_signout"
+                android:checkable="true"
+                />
+        </menu>
+    </item>
+</menu>

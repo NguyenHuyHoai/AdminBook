@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="tvIcon">50dp</dimen>
+    <dimen name="sixtyDP">60dp</dimen>
+    <dimen name="seventyDP">70dp</dimen>
+    <dimen name="eightyDP">80dp</dimen>
+    <dimen name="ninetyDP">90dp</dimen>
+    <dimen name="mottramDP">100dp</dimen>
+    <dimen name="tenDP">10dp</dimen>
+    <dimen name="twentyDP">20dp</dimen>
+    <dimen name="thirtyDP">30dp</dimen>
+    <dimen name="fourtyDP">40dp</dimen>
+    <dimen name="mottrammuoiDP">110dp</dimen>
+    <dimen name="mottramhaimuoiDP">120dp</dimen>
+    <dimen name="mottrambamuoiDP">130dp</dimen>
+    <dimen name="mottrambonmuoiDP">140dp</dimen>
+    <dimen name="mottramnammuoiDP">150dp</dimen>
+
+    <dimen name="sizeText">16sp</dimen>
+    <dimen name="sizeTitle">30sp</dimen>
+    <dimen name="sizebtn">20sp</dimen>
+</resources>

@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="@dimen/twentyDP"
+    android:orientation="vertical"
+    android:background="@color/b_while">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/imageMP"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/twentyDP"
+        android:layout_gravity="center"
+        />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnFileImage"
+        android:layout_width="@dimen/mottramDP"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/tenDP"
+        android:background="@drawable/custom_file"
+        android:text="Chọn file"
+        android:textAllCaps="false"
+        android:textSize="@dimen/sizeText"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/thirtyDP"
+        android:background="@drawable/custom_et"
+        >
+
+        <TextView
+            android:layout_marginStart="5dp"
+            android:layout_width="@dimen/mottramDP"
+            android:layout_height="@dimen/tvIcon"
+            android:text="@string/tv_usename"
+            android:gravity="center_vertical"
+            android:textColor="@color/blue"
+            android:textSize="@dimen/sizeText"
+            android:textStyle="bold"
+            />
+
+        <TextView
+            android:id="@+id/tvUsenameMP"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/tvIcon"
+            android:gravity="center_vertical"
+            android:text="huyhoai"
+            android:textStyle="bold"
+            android:textSize="@dimen/sizeText"
+            android:textColor="@color/black"
+            android:paddingStart="5dp"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/tenDP"
+        android:background="@drawable/custom_et"
+        >
+
+        <TextView
+            android:layout_marginStart="5dp"
+            android:layout_width="@dimen/mottramDP"
+            android:layout_height="@dimen/tvIcon"
+            android:gravity="center_vertical"
+            android:text="@string/tv_email"
+            android:textColor="@color/blue"
+            android:textSize="@dimen/sizeText"
+            android:textStyle="bold"
+            />
+
+        <TextView
+            android:id="@+id/tvEmailMP"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/tvIcon"
+            android:gravity="center_vertical"
+            android:paddingStart="5dp"
+            android:text="abczx@gmail.com"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sizeText"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/tenDP"
+        android:background="@drawable/custom_et"
+        >
+
+        <TextView
+            android:layout_marginStart="5dp"
+            android:layout_width="@dimen/mottramDP"
+            android:layout_height="@dimen/tvIcon"
+            android:text="@string/tv_gender"
+            android:gravity="center_vertical"
+            android:textColor="@color/blue"
+            android:textSize="@dimen/sizeText"
+            android:textStyle="bold"
+            />
+
+        <Spinner
+            android:id="@+id/spinnerGender"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/tvIcon"
+            android:gravity="center_vertical"
+            android:entries="@array/gender_array"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/tenDP"
+        android:background="@drawable/custom_et"
+        >
+
+        <TextView
+            android:layout_marginStart="5dp"
+            android:layout_width="@dimen/mottramDP"
+            android:layout_height="@dimen/tvIcon"
+            android:text="@string/tv_describe"
+            android:paddingStart="5dp"
+            android:textColor="@color/blue"
+            android:textSize="@dimen/sizeText"
+            android:textStyle="bold"
+            />
+
+        <EditText
+            android:id="@+id/tvMota"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/custom_et"
+            android:gravity="start"
+            android:hint="Trống"
+            android:inputType="textMultiLine"
+            android:lines="4"
+            android:paddingStart="5dp"
+            android:textColor="@color/black" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_errorEMP"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/red"
+        android:textSize="@dimen/sizeText"
+        android:layout_marginTop="@dimen/tenDP"
+        />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnSave"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/tvIcon"
+        android:layout_marginTop="@dimen/twentyDP"
+        android:background="@drawable/button_disabled"
+        android:text="@string/tv_Save"
+        android:textColor="@color/white"
+        android:textAllCaps="false"
+        android:textSize="@dimen/sizeText"
+        />
+
+</LinearLayout>

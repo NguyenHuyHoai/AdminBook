@@ -1,0 +1,91 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/tenDP"
+    android:orientation="vertical"
+    >
+
+    <LinearLayout
+        android:id="@+id/optionBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+
+        <Spinner
+            android:id="@+id/spinnerOptions"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/tvIcon"
+            android:layout_weight="6"
+            android:entries="@array/options_array"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnAddUser"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/tvIcon"
+            android:layout_toEndOf="@id/spinnerOptions"
+            android:layout_weight="2"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:layout_marginStart="@dimen/tenDP"
+            android:text="@string/tv_add_user"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:drawablePadding="10dp"
+            android:background="@drawable/custom_btn_add"
+            android:textAllCaps="false"
+            android:textSize="@dimen/sizeText"
+            android:textColor="@color/blue"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/headerLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="5dp">
+
+        <TextView
+            android:id="@+id/titleImage"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/tvIcon"
+            android:layout_weight="2"
+            android:text="Ảnh"
+            android:textSize="16sp"
+            android:gravity= "center"
+            />
+
+        <TextView
+            android:id="@+id/textViewUsername"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/tvIcon"
+            android:layout_weight="6"
+            android:text="Usename"
+            android:textSize="16sp"
+            android:gravity= "center"
+            />
+
+        <TextView
+            android:id="@+id/textViewAccessLevel"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/tvIcon"
+            android:layout_weight="2"
+            android:text="@string/tv_permission"
+            android:textSize="16sp"
+            android:gravity= "center"
+            />
+    </LinearLayout>
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewUsers"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/tenDP"
+        />
+
+</LinearLayout>

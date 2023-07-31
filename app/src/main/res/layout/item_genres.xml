@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="@color/b_while"
+    android:layout_marginTop="@dimen/tenDP"
+    >
+
+    <TextView
+        android:id="@+id/textGenresName"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/tvIcon"
+        android:textSize="16sp"
+        android:gravity="center"
+        />
+
+</LinearLayout>

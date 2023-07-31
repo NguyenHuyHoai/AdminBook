@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/b_while"
+        android:orientation="vertical"
+        android:padding="@dimen/thirtyDP"
+        tools:layout_editor_absoluteX="-136dp"
+        tools:layout_editor_absoluteY="16dp">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/imageAccount"
+            android:layout_width="@dimen/mottramnammuoiDP"
+            android:layout_height="@dimen/mottramnammuoiDP"
+            android:src="@drawable/icon_logo"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/twentyDP"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/tvIcon"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/eTEmail"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/tvIcon"
+                android:drawableStart="@drawable/icon_email"
+                android:drawablePadding="@dimen/tenDP"
+                android:hint="@string/tv_Input_Email"
+                android:maxLines="1"
+                android:padding="@dimen/tenDP"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sizeText"
+                android:background="@drawable/custom_et"/>
+
+            <EditText
+                android:id="@+id/eTPass"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/tvIcon"
+                android:layout_marginTop="@dimen/tenDP"
+                android:drawableStart="@drawable/icon_lock"
+                android:drawablePadding="@dimen/tenDP"
+                android:hint="@string/tv_Input_Pass"
+                android:inputType="textPassword"
+                android:maxLines="1"
+                android:padding="@dimen/tenDP"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sizeText"
+                android:background="@drawable/custom_et"
+                />
+
+            <TextView
+                android:id="@+id/tv_error"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/red"
+                android:textSize="@dimen/sizeText"
+                android:layout_marginTop="@dimen/tenDP"
+                />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnLogin"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/tvIcon"
+                android:layout_marginTop="@dimen/twentyDP"
+                android:background="@drawable/custom_btn_login"
+                android:text="@string/tv_Login"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sizeText" />
+
+
+            <TextView
+                android:id="@+id/tVForgot"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/twentyDP"
+                android:text="@string/tv_ForgotPass"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sizeText" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnRegister"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/tvIcon"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/custom_btn_register"
+                android:text="@string/tv_Register"
+                android:textAllCaps="false"
+                android:textColor="@color/blue"
+                android:textSize="@dimen/sizeText" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

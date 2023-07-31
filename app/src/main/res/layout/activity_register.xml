@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="@dimen/thirtyDP"
+        android:background="@color/b_while"
+        >
+
+        <TextView
+            android:id="@+id/tvBack"
+            android:layout_width="@dimen/tvIcon"
+            android:layout_height="@dimen/tvIcon"
+            android:background="@drawable/icon_back"
+            />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/imageAccount"
+            android:layout_width="@dimen/mottramnammuoiDP"
+            android:layout_height="@dimen/mottramnammuoiDP"
+            android:src="@drawable/icon_logo"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/twentyDP"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/tvIcon"
+            android:orientation="vertical"
+            >
+
+            <EditText
+                android:id="@+id/eTUser"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/tvIcon"
+                android:hint="@string/tv_User"
+                android:drawableStart="@drawable/icon_myaccount"
+                android:padding="@dimen/tenDP"
+                android:drawablePadding="@dimen/tenDP"
+                android:maxLines="1"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sizeText"
+                android:background="@drawable/custom_et"
+                />
+
+            <EditText
+                android:id="@+id/eTEmail"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/tvIcon"
+                android:hint="@string/tv_Input_Email"
+                android:drawableStart="@drawable/icon_email"
+                android:padding="@dimen/tenDP"
+                android:drawablePadding="@dimen/tenDP"
+                android:maxLines="1"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sizeText"
+                android:layout_marginTop="@dimen/tenDP"
+                android:background="@drawable/custom_et"
+                />
+
+            <EditText
+                android:id="@+id/eTPass"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/tvIcon"
+                android:hint="@string/tv_Input_Pass"
+                android:drawableStart="@drawable/icon_lock"
+                android:padding="@dimen/tenDP"
+                android:drawablePadding="@dimen/tenDP"
+                android:maxLines="1"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sizeText"
+                android:inputType="textPassword"
+                android:layout_marginTop="@dimen/tenDP"
+                android:background="@drawable/custom_et"
+                />
+
+            <EditText
+                android:id="@+id/eTRPass"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/tvIcon"
+                android:hint="@string/tv_RPass"
+                android:drawableStart="@drawable/icon_lock"
+                android:padding="@dimen/tenDP"
+                android:drawablePadding="@dimen/tenDP"
+                android:maxLines="1"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sizeText"
+                android:inputType="textPassword"
+                android:layout_marginTop="@dimen/tenDP"
+                android:background="@drawable/custom_et"
+                />
+
+            <TextView
+                android:id="@+id/tv_errorDK"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/red"
+                android:textSize="@dimen/sizeText"
+                android:layout_marginTop="@dimen/tenDP"
+                />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnRegisterMain"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/tvIcon"
+                android:layout_marginTop="@dimen/twentyDP"
+                android:background="@drawable/custom_btn_login"
+                android:text="@string/tv_Register"
+                android:textColor="@color/white"
+                android:textAllCaps="false"
+                android:textSize="@dimen/sizeText"
+                />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

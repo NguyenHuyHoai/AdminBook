@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/tenDP"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="10dp"
+    >
+
+    <RelativeLayout
+        android:id="@+id/itembook"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/tenDP"
+        android:background="@drawable/custom_list"
+        >
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/titleImageBook"
+            android:layout_width="@dimen/sixtyDP"
+            android:layout_height="@dimen/sixtyDP"
+            android:src="@drawable/icon_logo"
+            />
+
+        <TextView
+            android:id="@+id/titleNameBook"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/tv_NameBook"
+            android:textSize="16sp"
+            android:gravity= "center"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:background="@drawable/custom_list"
+            android:layout_toEndOf="@+id/titleImageBook"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/twentyDP"
+            />
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

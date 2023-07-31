@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingTop="@dimen/tvIcon"
+    android:paddingStart="@dimen/twentyDP"
+    android:paddingRight="@dimen/twentyDP"
+    android:background="@color/b_while"
+    >
+
+    <EditText
+        android:id="@+id/eTCpass"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/tvIcon"
+        android:hint="@string/tv_Opass"
+        android:drawableStart="@drawable/icon_lock"
+        android:padding="@dimen/tenDP"
+        android:drawablePadding="@dimen/tenDP"
+        android:maxLines="1"
+        android:textColor="@color/black"
+        android:textSize="@dimen/sizeText"
+        android:background="@drawable/custom_et"
+        android:inputType="textPassword"
+        />
+
+    <EditText
+        android:id="@+id/eTNpass"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/tvIcon"
+        android:hint="@string/tv_Npass"
+        android:drawableStart="@drawable/icon_lock"
+        android:padding="@dimen/tenDP"
+        android:drawablePadding="@dimen/tenDP"
+        android:maxLines="1"
+        android:textColor="@color/black"
+        android:textSize="@dimen/sizeText"
+        android:layout_marginTop="@dimen/tenDP"
+        android:background="@drawable/custom_et"
+        android:inputType="textPassword"
+        />
+
+    <EditText
+        android:id="@+id/eTRNpass"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/tvIcon"
+        android:hint="@string/tv_RNpass"
+        android:drawableStart="@drawable/icon_lock"
+        android:padding="@dimen/tenDP"
+        android:drawablePadding="@dimen/tenDP"
+        android:maxLines="1"
+        android:textColor="@color/black"
+        android:textSize="@dimen/sizeText"
+        android:layout_marginTop="@dimen/tenDP"
+        android:background="@drawable/custom_et"
+        android:inputType="textPassword"
+        />
+
+    <CheckBox
+        android:id="@+id/cb_showpass"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/tenDP"
+        android:text="@string/cb_pass"
+        android:layout_marginStart="220dp"
+        />
+
+    <TextView
+        android:id="@+id/tv_errorCP"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/red"
+        android:textSize="@dimen/sizeText"
+        />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnChangePass"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/tvIcon"
+        android:layout_marginTop="@dimen/tenDP"
+        android:background="@drawable/button_disabled"
+        android:text="@string/tv_ChangePass"
+        android:textColor="@color/white"
+        android:textAllCaps="false"
+        android:textSize="@dimen/sizeText"
+        />
+
+</LinearLayout>

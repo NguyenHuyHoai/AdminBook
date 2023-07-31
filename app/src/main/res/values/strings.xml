@@ -1,0 +1,90 @@
+<resources>
+    <string name="app_name">AdminBook</string>
+
+    <string name="tv_Login">Đăng Nhập</string>
+    <string name="tv_Register">Tạo tài khoản mới</string>
+    <string name="tv_ForgotPass">Bạn quên mật khẩu ư?</string>
+    <string name="tv_Pass">Mật Khẩu</string>
+    <string name="tv_User">Tên Tài Khoản</string>
+    <string name="tv_RPass">Xác Nhận Mật Khẩu</string>
+    <string name="tv_Sent">Gửi</string>
+    <string name="tv_File">Hồ Sơ</string>
+    <string name="tv_EditProfile">Sửa Thông Tin</string>
+
+    <string name="tv_listBook">List Book</string>
+    <string name="tv_listGenres">List Genres</string>
+    <string name="tv_listChapter">List Chapter</string>
+    <string name="tv_listUser">List Users</string>
+
+    <string name="tv_Account">Account</string>
+    <string name="tv_changePW">Change Password</string>
+    <string name="tv_myAccount">Personal Information</string>
+    <string name="tv_signout">SignOut</string>
+
+
+    <string name="nav_drawer_open">Open navigation drawer</string>
+    <string name="nav_drawer_close">Close navigation drawer</string>
+
+
+    <string-array name="options_array">
+        <item>Tổng</item>
+        <item>Danh sách admin</item>
+        <item>Danh sách người đọc</item>
+        <item>Danh sách bị khóa</item>
+    </string-array>
+
+    <string-array name="gender_array">
+        <item>Nam</item>
+        <item>Nữ</item>
+        <item>Khác</item>
+    </string-array>
+
+
+    <string name="tv_add_user">Thêm</string>
+    <string name="tv_exit">Thoát</string>
+    <string name="tv_reset">Làm mới</string>
+    <string name="tv_edit">Cập nhật</string>
+
+
+    <string name="tv_UpdateUser">Cập Nhật Thông Tin Người Dùng</string>
+    <string name="tv_usename">Username</string>
+    <string name="tv_permission">Quyền</string>
+    <string name="tv_verification">Xác minh</string>
+    <string name="tv_status">Trạng thái</string>
+    <string name="tv_image">Ảnh</string>
+
+
+    <string name="tv_gender">Giới tính</string>
+    <string name="tv_describe">Mô tả</string>
+    <string name="tv_email">Email</string>
+
+
+    <string name="cb_pass">Hiện mật khẩu</string>
+    <string name="tv_Opass">Nhập mật khẩu cũ</string>
+    <string name="tv_Npass">Nhập mật khẩu mới</string>
+    <string name="tv_RNpass">Xác nhận mật khẩu mới </string>
+    <string name="tv_ChangePass">Đổi mật khẩu</string>
+
+    <string name="tv_Save">Lưu thông tin</string>
+    <string name="tv_Empty">Trống</string>
+    <string name="tv_NameGenres">Tên thể loại</string>
+    <string name="title_addGenres">Thêm thể loại</string>
+
+    <string name="tv_Input_Email">Nhập Email</string>
+    <string name="tv_Input_Pass">Nhập Mật Khẩu</string>
+    <string name="tv_Input_nameGenres">Nhập tên thể loại</string>
+
+    <string name="tv_ImageBook">Ảnh</string>
+    <string name="tv_NameBook">Tên sách</string>
+    <string name="tv_NameAuthor">Tên tác giả</string>
+    <string name="tv_Rating">Đánh giá</string>
+    <string name="tv_CountRating">Lượt đánh giá</string>
+    <string name="tv_Genres">Tên thể loại</string>
+
+    <string name="ed_nameBook">Nhập tên sách</string>
+    <string name="ed_nameAuthor">Nhập tên tác giả</string>
+    <string name="ed_nameGenres">Nhập tên thể loại</string>
+    <string name="ed_nameDescription">Nhập mô tả</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

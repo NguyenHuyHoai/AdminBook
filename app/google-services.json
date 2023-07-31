@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "921328368047",
+    "project_id": "book-fd338",
+    "storage_bucket": "book-fd338.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:921328368047:android:489c8f8837a140ae4f975a",
+        "android_client_info": {
+          "package_name": "com.example.adminbook"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "921328368047-pu6cn1btro9iu3ca48d9lm2km73jrush.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBQXyxCu_8mOBIzGSij_qm6LMLa8FxJusc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "921328368047-pu6cn1btro9iu3ca48d9lm2km73jrush.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

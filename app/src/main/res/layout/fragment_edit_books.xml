@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/b_while"
+    android:orientation="vertical"
+    >
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/twentyDP"
+            >
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Cập nhật sách"
+                android:textColor="@color/red"
+                android:textSize="@dimen/sizebtn"
+                android:textStyle="bold"
+                android:gravity="center"
+                />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/imageBooks"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/twentyDP"
+                android:layout_gravity="center"
+                />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnFileImage"
+                android:layout_width="@dimen/mottramDP"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/tenDP"
+                android:background="@drawable/custom_file"
+                android:text="Chọn file"
+                android:textAllCaps="false"
+                android:textSize="@dimen/sizeText"
+                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/thirtyDP"
+                android:background="@drawable/custom_et"
+                >
+
+                <TextView
+                    android:layout_marginStart="5dp"
+                    android:layout_width="@dimen/mottramDP"
+                    android:layout_height="@dimen/tvIcon"
+                    android:text="@string/tv_NameBook"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/blue"
+                    android:textSize="@dimen/sizeText"
+                    android:textStyle="bold"
+                    />
+
+                <EditText
+                    android:id="@+id/ed_nameBook"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/tvIcon"
+                    android:gravity="center_vertical"
+                    android:hint="@string/ed_nameBook"
+                    android:textSize="@dimen/sizeText"
+                    android:paddingStart="5dp"
+                    android:background="@drawable/custom_et"
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/tenDP"
+                android:background="@drawable/custom_et"
+                >
+
+                <TextView
+                    android:layout_marginStart="5dp"
+                    android:layout_width="@dimen/mottramDP"
+                    android:layout_height="@dimen/tvIcon"
+                    android:gravity="center_vertical"
+                    android:text="@string/tv_NameAuthor"
+                    android:textColor="@color/blue"
+                    android:textSize="@dimen/sizeText"
+                    android:textStyle="bold"
+                    />
+
+                <EditText
+                    android:id="@+id/ed_nameAuthor"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/tvIcon"
+                    android:gravity="center_vertical"
+                    android:paddingStart="5dp"
+                    android:hint="@string/ed_nameAuthor"
+                    android:textSize="@dimen/sizeText"
+                    android:background="@drawable/custom_et"
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/tenDP"
+                android:background="@drawable/custom_et"
+                >
+
+                <TextView
+                    android:layout_marginStart="5dp"
+                    android:layout_width="@dimen/mottramDP"
+                    android:layout_height="@dimen/tvIcon"
+                    android:text="@string/tv_Genres"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/blue"
+                    android:textSize="@dimen/sizeText"
+                    android:textStyle="bold"
+                    />
+
+                <EditText
+                    android:id="@+id/ed_listGenres"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/tvIcon"
+                    android:gravity="center_vertical"
+                    android:background="@drawable/custom_et"
+                    android:hint="@string/ed_nameGenres"
+                    android:layout_marginStart="5dp"
+                    android:textSize="@dimen/sizeText"
+                    android:maxLines="1"
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/tenDP"
+                android:background="@drawable/custom_et"
+                >
+
+                <TextView
+                    android:layout_marginStart="5dp"
+                    android:layout_width="@dimen/mottramDP"
+                    android:layout_height="@dimen/tvIcon"
+                    android:text="@string/tv_describe"
+                    android:paddingStart="5dp"
+                    android:textColor="@color/blue"
+                    android:textSize="@dimen/sizeText"
+                    android:textStyle="bold"
+                    android:gravity="center_vertical"
+                    />
+
+                <EditText
+                    android:id="@+id/ed_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/custom_et"
+                    android:gravity="center_vertical"
+                    android:hint="Trống"
+                    android:inputType="textMultiLine"
+                    android:paddingStart="5dp"
+                    android:textColor="@color/black"
+                    android:minHeight="@dimen/tvIcon"
+                    android:padding="@dimen/tenDP"
+                    android:maxLines="6"
+                    />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_errorAB"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/red"
+                android:textSize="@dimen/sizeText"
+                android:layout_marginTop="@dimen/tenDP"
+                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/twentyDP"
+                >
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btnUpdate"
+                    android:layout_width="@dimen/mottramnammuoiDP"
+                    android:layout_height="@dimen/tvIcon"
+                    android:layout_marginStart="@dimen/tenDP"
+                    android:background="@drawable/button_disabled"
+                    android:text="@string/tv_edit"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/sizeText" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btnCancel"
+                    android:layout_width="@dimen/mottramnammuoiDP"
+                    android:layout_height="@dimen/tvIcon"
+                    android:text="@string/tv_exit"
+                    android:layout_marginStart="@dimen/fourtyDP"
+                    android:background="@drawable/custom_btn_register"
+                    android:textColor="@color/blue"
+                    android:textAllCaps="false"
+                    android:textSize="@dimen/sizeText"
+                    />
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</LinearLayout>
