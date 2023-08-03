@@ -69,6 +69,10 @@
     <string name="tv_Empty">Trống</string>
     <string name="tv_NameGenres">Tên thể loại</string>
     <string name="title_addGenres">Thêm thể loại</string>
+    <string name="tv_NameChapters">Tên chương</string>
+    <string name="title_addChapters">Thêm Chương</string>
+    <string name="title_updateChapters">Cập Nhật Chương</string>
+    <string name="title_Link">Đường dẫn</string>
 
     <string name="tv_Input_Email">Nhập Email</string>
     <string name="tv_Input_Pass">Nhập Mật Khẩu</string>
