@@ -77,4 +77,12 @@ public class ChaptersAdapter extends RecyclerView.Adapter<ChaptersAdapter.ViewHo
             binding.tvchapterName.setText(chaptersItem.getChaptersName());
         }
     }
+
+    public void removeItem(int position) {
+        if (chaptersList == null || chaptersList.isEmpty() || position < 0 || position >= chaptersList.size()) {
+            return;
+        }
+        chaptersList.remove(position);
+        notifyItemRemoved(position);
+    }
 }

@@ -18,6 +18,7 @@ import android.provider.OpenableColumns;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,14 +51,14 @@ public class EditChapter extends BottomSheetDialogFragment {
     private CollectionReference booksCollection = db.collection("Books");
     private CollectionReference chaptersCollection = db.collection("Chapters");
     private FirebaseStorage storage = FirebaseStorage.getInstance();
-    private StorageReference bookstorageRef = storage.getReference().child("content");
+    private StorageReference chapterstorageRef = storage.getReference().child("content");
     private ProgressDialog progressDialog;
 
     private static final int READ_EXTERNAL_STORAGE_PERMISSION_REQUEST_CODE = 101;
     private static final int FILE_PICKER_REQUEST_CODE = 102;
     private String booksId;
     private String chaptersId;
-    private Uri uri;
+    private Uri uriFile;
     private EditText name;
     private TextView namefile;
     private String currentName;
@@ -96,7 +97,7 @@ public class EditChapter extends BottomSheetDialogFragment {
             String chaptersContent = bundle.getString("chaptersContent");
             currentFileName = chaptersContent;
             binding.tvLink.setText(chaptersContent);
-            chaptersId = bundle.getString("getChaptersId");
+            chaptersId = bundle.getString("chaptersId");
         }
 
         setupSaveButton();
@@ -118,7 +119,7 @@ public class EditChapter extends BottomSheetDialogFragment {
                     binding.tvName.requestFocus();
                     return;
                 }
-                uploadFileToFirebaseStorage(uri, newName, newFileName);
+                uploadFileToFirebaseStorage(newName, newFileName);
             }
         });
 
@@ -141,17 +142,14 @@ public class EditChapter extends BottomSheetDialogFragment {
         name.addTextChangedListener(textWatcher);
         namefile.addTextChangedListener(textWatcher);
     }
-
     private boolean checkNameChanged() {
         String currentname = name.getText().toString();
         return !currentname.equals(previousName);
     }
-
     private boolean checkNameFileChanged() {
         String currentNamefile = namefile.getText().toString();
         return !currentNamefile.equals(previousNamefile);
     }
-
     private TextWatcher textWatcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -167,7 +165,6 @@ public class EditChapter extends BottomSheetDialogFragment {
         public void afterTextChanged(Editable s) {
         }
     };
-
     private void checkButtonState() {
         boolean isChanged = checkNameChanged() || checkNameFileChanged();
         binding.btnUpdate.setEnabled(isChanged);
@@ -177,7 +174,6 @@ public class EditChapter extends BottomSheetDialogFragment {
             binding.btnUpdate.setBackgroundResource(R.drawable.button_disabled);
         }
     }
-
     //Input Text
     private void requestReadExternalStoragePermission() {
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE)
@@ -189,7 +185,6 @@ public class EditChapter extends BottomSheetDialogFragment {
             selectFile();
         }
     }
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == READ_EXTERNAL_STORAGE_PERMISSION_REQUEST_CODE) {
@@ -200,7 +195,6 @@ public class EditChapter extends BottomSheetDialogFragment {
             }
         }
     }
-
     private void selectFile() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("*/*");
@@ -211,7 +205,6 @@ public class EditChapter extends BottomSheetDialogFragment {
         Intent chooserIntent = Intent.createChooser(intent, "Chọn tệp");
         startActivityForResult(chooserIntent, FILE_PICKER_REQUEST_CODE);
     }
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -220,11 +213,10 @@ public class EditChapter extends BottomSheetDialogFragment {
                 Uri fileUri = data.getData();
                 String fileName = getFileNameFromUri(fileUri);
                 binding.tvLink.setText(fileName);
-                uri = fileUri;
+                uriFile = fileUri;
             }
         }
     }
-
     private String getFileNameFromUri(Uri fileUri) {
         String fileName = null;
         Cursor cursor = getActivity().getContentResolver().query(fileUri, null, null, null, null);
@@ -236,85 +228,90 @@ public class EditChapter extends BottomSheetDialogFragment {
         }
         return fileName;
     }
-
     //Update
-    private void uploadFileToFirebaseStorage(Uri uriFile, String newName, String newFileName) {
+    private void uploadFileToFirebaseStorage(String newName, String newFileName) {
 
-        if (newName.equals(currentName)) {
-            if (newFileName.equals(currentFileName)) {
-                checkAndUpdateNameAndFile(uriFile, newName);
+
+        if (!newName.equals(currentName)) {
+            if (!newFileName.equals(currentFileName)) {
+                checkAndUpdateNameAndFile(newName, newFileName);
             } else {
-                checkAndUpdateNameChapterToFireStore(uriFile, newName);
+                Log.e("newName", newName);
+                Log.e("newFileName", newFileName);
+                Log.e("currentName", currentName);
+                Log.e("currentName", currentFileName);
+                checkAndUpdateNameChapterToFireStore(newName);
             }
         } else {
-            updateNameChapter(uriFile, newFileName);
+            updateNameChapter(newFileName);
         }
 
     }
-    private void checkAndUpdateNameAndFile(Uri uriFile, String newName) {
-        chaptersCollection.whereEqualTo("chaptersName", newName).get()
+    private void checkAndUpdateNameAndFile(String newName, String newFileName) {
+        chaptersCollection.whereEqualTo("chaptersName", newName)
+                .whereEqualTo("booksId", booksId).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             if (!task.getResult().isEmpty()) {
-                                // Nếu có kết quả trả về, tức là chaptersName đã tồn tại trong collection
-                                binding.tvError.setText("");
-                                binding.tvError.setText("Tên chương đã bị trùng!");
+                                binding.tvName.setError("Tên chương đã bị trùng!");
+                                binding.tvName.requestFocus();
                             } else {
-                                String filename = UUID.randomUUID().toString() + ".jpg";
-                                StorageReference fileRef = bookstorageRef.child(filename);
-                                progressDialog.setMessage("Đang tải lên...");
-                                progressDialog.show();
-                                fileRef.putFile(uriFile)
-                                        .addOnSuccessListener(taskSnapshot -> {
-                                            fileRef.getDownloadUrl()
-                                                    .addOnSuccessListener(uri -> {
-                                                        String newFileUrl = uri.toString();
-                                                        chaptersCollection.document(chaptersId)
-                                                                .update("chaptersContent", newFileUrl)
-                                                                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                                    @Override
-                                                                    public void onSuccess(Void unused) {
-                                                                        if (chaptersEditedListener != null) {
-                                                                            chaptersEditedListener.onChaptersEdited();
-                                                                        }
-                                                                        updateChapterToBooks(newName);
+                                    StorageReference fileRef = chapterstorageRef.child(newFileName);
+                                                                progressDialog.setMessage("Đang tải lên...");
+                                                                progressDialog.show();
+                                                                fileRef.putFile(uriFile)
+                                            .addOnSuccessListener(taskSnapshot -> {
+                                        fileRef.getDownloadUrl()
+                                                .addOnSuccessListener(uri -> {
+                                                    String newFileUrl = uri.toString();
+                                                    chaptersCollection.document(chaptersId)
+                                                            .update("chaptersContent", newFileUrl)
+                                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                @Override
+                                                                public void onSuccess(Void unused) {
+                                                                    if (chaptersEditedListener != null) {
+                                                                        chaptersEditedListener.onChaptersEdited();
                                                                     }
-                                                                }).addOnFailureListener(new OnFailureListener() {
-                                                                    @Override
-                                                                    public void onFailure(@NonNull Exception e) {
-                                                                        progressDialog.cancel();
-                                                                        Toast.makeText(getActivity(), "Cập nhật Chapter thất bại!",
-                                                                                Toast.LENGTH_SHORT).show();
-                                                                    }
-                                                                });
-                                                    });
-                                        })
-                                        .addOnFailureListener(new OnFailureListener() {
-                                            @Override
-                                            public void onFailure(@NonNull Exception e) {
-                                                progressDialog.cancel();
-                                                Toast.makeText(getActivity(), "Update Chapter thất bại!",
-                                                        Toast.LENGTH_SHORT).show();
-                                            }
-                                        });
+                                                                    updateChapterToBooks(newName);
+                                                                }
+                                                            }).addOnFailureListener(new OnFailureListener() {
+                                                                @Override
+                                                                public void onFailure(@NonNull Exception e) {
+                                                                    progressDialog.cancel();
+                                                                    Toast.makeText(getActivity(), "Cập nhật Chapter thất bại!",
+                                                                            Toast.LENGTH_SHORT).show();
+                                                                }
+                                                            });
+                                                });
+                                    })
+                                            .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            progressDialog.cancel();
+                                            Toast.makeText(getActivity(), "Update Chapter thất bại!",
+                                                    Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
                             }
                         }
                     }
                 });
     }
 
-    private void checkAndUpdateNameChapterToFireStore(Uri uriFile, String newName) {
-        chaptersCollection.whereEqualTo("chaptersName", newName).get()
+
+
+    private void checkAndUpdateNameChapterToFireStore(String newName) {
+        chaptersCollection.whereEqualTo("chaptersName", newName)
+                .whereEqualTo("booksId", booksId).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             if (!task.getResult().isEmpty()) {
-                                // Nếu có kết quả trả về, tức là chaptersName đã tồn tại trong collection
-                                binding.tvError.setText("");
-                                binding.tvError.setText("Tên chương đã bị trùng!");
+                                binding.tvName.setError("Tên chương đã bị trùng!");
+                                binding.tvName.requestFocus();
                             } else {
                                 progressDialog.setMessage("Đang tải lên...");
                                 progressDialog.show();
@@ -336,49 +333,6 @@ public class EditChapter extends BottomSheetDialogFragment {
                                         });
                             }
                         }
-                    }
-                });
-    }
-
-    private void updateNameChapter(Uri uriFile, String filename) {
-        progressDialog.setMessage("Đang tải lên...");
-        progressDialog.show();
-
-        StorageReference fileRef = bookstorageRef.child(filename);
-        fileRef.putFile(uriFile)
-                .addOnSuccessListener(taskSnapshot -> {
-                    fileRef.getDownloadUrl()
-                            .addOnSuccessListener(uri -> {
-                                String newFileUrl = uri.toString();
-                                chaptersCollection.document(chaptersId)
-                                        .update("chaptersContent", newFileUrl)
-                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                            @Override
-                                            public void onSuccess(Void unused) {
-                                                if (chaptersEditedListener != null) {
-                                                    chaptersEditedListener.onChaptersEdited();
-                                                }
-                                                progressDialog.cancel();
-                                                Toast.makeText(getActivity(), "Cập nhật Chapter thành công!",
-                                                        Toast.LENGTH_SHORT).show();
-                                                dismiss(); // Đóng dialog sau khi thêm file thành công
-                                            }
-                                        }).addOnFailureListener(new OnFailureListener() {
-                                            @Override
-                                            public void onFailure(@NonNull Exception e) {
-                                                progressDialog.cancel();
-                                                Toast.makeText(getActivity(), "Cập nhật Chapter thất bại!",
-                                                        Toast.LENGTH_SHORT).show();
-                                            }
-                                        });
-                            });
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        progressDialog.cancel();
-                        Toast.makeText(getActivity(), "Update Chapter thất bại!",
-                                Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -410,6 +364,52 @@ public class EditChapter extends BottomSheetDialogFragment {
                         progressDialog.cancel();
                         Toast.makeText(getActivity(), "Cập nhật Chapter lên Books thất bại!", Toast.LENGTH_SHORT).show();
                         dismiss(); // Đóng dialog sau khi thêm file thành công
+                    }
+                });
+    }
+
+    private void updateNameChapter(String newLink) {
+        progressDialog.setMessage("Đang tải lên...");
+        progressDialog.show();
+
+        StorageReference fileRef = chapterstorageRef.child(newLink);
+        fileRef.putFile(uriFile)
+                .addOnSuccessListener(taskSnapshot -> {
+                    fileRef.getDownloadUrl()
+                            .addOnSuccessListener(uri -> {
+                                String newFileUrl = uri.toString();
+                                Log.e("NewLink", newFileUrl);
+                                Log.e("chaptersId", chaptersId);
+
+                                chaptersCollection.document(chaptersId)
+                                        .update("chaptersContent", newFileUrl)
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void unused) {
+                                                if (chaptersEditedListener != null) {
+                                                    chaptersEditedListener.onChaptersEdited();
+                                                }
+                                                progressDialog.cancel();
+                                                Toast.makeText(getActivity(), "Cập nhật Chapter thành công!",
+                                                        Toast.LENGTH_SHORT).show();
+                                                dismiss(); // Đóng dialog sau khi thêm file thành công
+                                            }
+                                        }).addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                progressDialog.cancel();
+                                                Toast.makeText(getActivity(), "Cập nhật Chapter thất bại!",
+                                                        Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+                            });
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        progressDialog.cancel();
+                        Toast.makeText(getActivity(), "Update Chapter thất bại!",
+                                Toast.LENGTH_SHORT).show();
                     }
                 });
     }

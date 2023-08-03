@@ -95,7 +95,7 @@ public class ListGenresFragment extends Fragment {
     }
 
     private void loadGenresData() {
-        firebaseFirestore.collection("Genres")
+        firebaseFirestore.collection("Genres").orderBy("genresName")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
