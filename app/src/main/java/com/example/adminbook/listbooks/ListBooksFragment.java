@@ -51,6 +51,7 @@ public class ListBooksFragment extends Fragment {
 
     private BooksAdapter adapter;
     private List<ItemBooks> booksList;
+
     public interface OnBooksAddedListener {
         void onBooksAdded();
     }

@@ -18,6 +18,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.adminbook.R;
 import com.example.adminbook.databinding.FragmentInformationBookBinding;
+import com.example.adminbook.listchapters.ListChapterFragment;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 
@@ -48,7 +49,26 @@ public class InformationBook extends BottomSheetDialogFragment {
                 dismiss();
             }
         });
+
+        binding.btnAddChapter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showAddChapter(bundle);
+                dismiss();
+            }
+        });
         return view;
+    }
+
+    private void showAddChapter(Bundle bundle) {
+        ListChapterFragment chapterFragment = new ListChapterFragment();
+        chapterFragment.setArguments(bundle);
+        // Thực hiện thay thế Fragment B bằng Fragment C
+        FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+        transaction.setCustomAnimations(R.anim.slide_up, R.anim.slide_down, R.anim.slide_up, R.anim.slide_down)
+                .replace(R.id.content_frame, chapterFragment)
+                .addToBackStack(null)
+                .commit();
     }
 
     private void showEditBook( Bundle bundle) {

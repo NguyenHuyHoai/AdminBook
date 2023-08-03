@@ -53,7 +53,6 @@ public class EditChapter extends BottomSheetDialogFragment {
     private StorageReference bookstorageRef = storage.getReference().child("content");
     private ProgressDialog progressDialog;
 
-    private static final int PICK_FILE_REQUEST_CODE = 100;
     private static final int READ_EXTERNAL_STORAGE_PERMISSION_REQUEST_CODE = 101;
     private static final int FILE_PICKER_REQUEST_CODE = 102;
     private String booksId;
@@ -241,18 +240,17 @@ public class EditChapter extends BottomSheetDialogFragment {
     //Update
     private void uploadFileToFirebaseStorage(Uri uriFile, String newName, String newFileName) {
 
-        if (newName != currentName) {
-            if (newFileName != currentFileName) {
+        if (newName.equals(currentName)) {
+            if (newFileName.equals(currentFileName)) {
                 checkAndUpdateNameAndFile(uriFile, newName);
             } else {
                 checkAndUpdateNameChapterToFireStore(uriFile, newName);
             }
         } else {
-            updateNameChapter(uriFile);
+            updateNameChapter(uriFile, newFileName);
         }
 
     }
-
     private void checkAndUpdateNameAndFile(Uri uriFile, String newName) {
         chaptersCollection.whereEqualTo("chaptersName", newName).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -342,11 +340,10 @@ public class EditChapter extends BottomSheetDialogFragment {
                 });
     }
 
-    private void updateNameChapter(Uri uriFile) {
+    private void updateNameChapter(Uri uriFile, String filename) {
         progressDialog.setMessage("Đang tải lên...");
         progressDialog.show();
 
-        String filename = UUID.randomUUID().toString() + ".jpg";
         StorageReference fileRef = bookstorageRef.child(filename);
         fileRef.putFile(uriFile)
                 .addOnSuccessListener(taskSnapshot -> {

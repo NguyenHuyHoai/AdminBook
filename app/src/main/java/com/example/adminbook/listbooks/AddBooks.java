@@ -43,10 +43,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -69,7 +69,6 @@ public class AddBooks extends BottomSheetDialogFragment {
     private Bitmap previousImageBitmap;
     ProgressDialog progressDialog;
 
-    View view;
     public static AddBooks newInstance() {
         return new AddBooks();
     }
@@ -244,6 +243,7 @@ public class AddBooks extends BottomSheetDialogFragment {
         String genres = binding.edListGenres.getText().toString();
         String description = binding.edDescription.getText().toString();
         List<String> genresList = Arrays.asList(genres.split(", "));
+        List<String> chapter = new ArrayList<>();
 
         checkGenresExist(genresList, new OnSuccessListener<Boolean>() {
             @Override
@@ -267,7 +267,7 @@ public class AddBooks extends BottomSheetDialogFragment {
                                         .addOnSuccessListener(uri -> {
                                             String imageURL = uri.toString();
                                             // Sau khi có đường dẫn ảnh, lưu thông tin sách vào Firestore
-                                            saveBooksInfoToFirestore(title, author, description, genresList, imageURL);
+                                            saveBooksInfoToFirestore(title, author, description, genresList, imageURL, chapter);
                                         })
                                         .addOnFailureListener(e -> {
                                             binding.tvErrorAB.setText("");
@@ -310,7 +310,7 @@ public class AddBooks extends BottomSheetDialogFragment {
         }
     }
     private void saveBooksInfoToFirestore(String title, String author, String description,
-                                          List<String> genresList, String imageURL) {
+                                          List<String> genresList, String imageURL, List<String> chapter) {
         ItemBooks newBook = new ItemBooks();
         newBook.setTitle(title);
         newBook.setAuthor(author);
@@ -321,6 +321,7 @@ public class AddBooks extends BottomSheetDialogFragment {
         newBook.setViewsCount(0);
         newBook.setImageBook(imageURL);
         newBook.setCreationTimestamp(Timestamp.now());
+        newBook.setChapter(chapter);
         booksCollection.add(newBook)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
@@ -383,7 +384,7 @@ public class AddBooks extends BottomSheetDialogFragment {
                 });
     }
     // Hàm hiển thị Dialog thành công và thất bại
-    private void showFailureDialog() {
+    public void showFailureDialog() {
         new AlertDialog.Builder(getActivity())
                 .setIcon(R.drawable.icon_not_verified)
                 .setTitle("Bạn đã thêm thất bại!")
@@ -395,7 +396,7 @@ public class AddBooks extends BottomSheetDialogFragment {
                 })
                 .show();
     }
-    private void showSuccessDialog() {
+    public void showSuccessDialog() {
         new AlertDialog.Builder(getActivity())
                 .setIcon(R.drawable.icon_verified)
                 .setTitle("Bạn đã thêm thành công!")

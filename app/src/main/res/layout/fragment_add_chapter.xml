@@ -56,6 +56,7 @@
         android:orientation="horizontal"
         android:layout_marginTop="@dimen/tenDP"
         android:background="@drawable/custom_et"
+        android:paddingBottom="@dimen/tenDP"
         >
 
         <TextView
@@ -69,7 +70,7 @@
             android:textStyle="bold"
             />
 
-        <EditText
+        <TextView
             android:id="@+id/tv_Link"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -77,35 +78,46 @@
             android:hint="@string/tv_Input_nameGenres"
             android:textSize="@dimen/sizeText"
             android:textColor="@color/black"
-            android:paddingStart="5dp"
-            android:paddingBottom="5dp"
             android:background="@drawable/custom_et"
             android:minHeight="@dimen/tvIcon"
+            android:padding="5dp"
             />
 
     </LinearLayout>
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btnUpFile"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/tvIcon"
-        android:layout_marginTop="@dimen/tenDP"
-        android:layout_marginStart="260dp"
-        android:text="Chọn File"
-        android:textAllCaps="false"
-        android:textColor="@color/white"
-        android:background="@drawable/custom_upfile"
-
-        />
-
-    <TextView
-        android:id="@+id/tv_error"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/red"
-        android:textSize="@dimen/sizeText"
+        android:layout_height="@dimen/tvIcon"
+        android:orientation="horizontal"
         android:layout_marginTop="@dimen/tenDP"
-        />
+        >
+
+        <TextView
+            android:id="@+id/tv_error"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/red"
+            android:textSize="@dimen/sizeText"
+            android:gravity="center_vertical"
+            />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnUpFile"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/tvIcon"
+            android:layout_marginStart="@dimen/tenDP"
+            android:text="Chọn File"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:background="@drawable/custom_upfile"
+
+            />
+
+
+
+    </LinearLayout>
+
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -114,7 +126,7 @@
         >
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btnUpdate"
+            android:id="@+id/btnAdd"
             android:layout_width="match_parent"
             android:layout_height="@dimen/tvIcon"
             android:text="@string/tv_add_user"

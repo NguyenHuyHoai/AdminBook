@@ -5,13 +5,17 @@ import com.google.firebase.Timestamp;
 public class ItemChapters {
     private String chaptersId;
     private String booksId;
+    private String chaptersName;
     private String chaptersContent;
     private Timestamp chaptersTime;
     public ItemChapters() {
     }
-    public ItemChapters(String chaptersId, String booksId, String chaptersContent, Timestamp chaptersTime) {
+
+    public ItemChapters(String chaptersId, String booksId, String chaptersName,
+                        String chaptersContent, Timestamp chaptersTime) {
         this.chaptersId = chaptersId;
         this.booksId = booksId;
+        this.chaptersName = chaptersName;
         this.chaptersContent = chaptersContent;
         this.chaptersTime = chaptersTime;
     }
@@ -46,5 +50,13 @@ public class ItemChapters {
 
     public void setChaptersTime(Timestamp chaptersTime) {
         this.chaptersTime = chaptersTime;
+    }
+
+    public String getChaptersName() {
+        return chaptersName;
+    }
+
+    public void setChaptersName(String chaptersName) {
+        this.chaptersName = chaptersName;
     }
 }
