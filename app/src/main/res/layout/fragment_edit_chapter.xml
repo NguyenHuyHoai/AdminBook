@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/b_while"
+    android:padding="@dimen/twentyDP"
+    android:orientation="vertical"
+    >
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/title_updateChapters"
+        android:textColor="@color/red"
+        android:textSize="@dimen/sizebtn"
+        android:textStyle="bold"
+        android:gravity="center"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/thirtyDP"
+        android:background="@drawable/custom_et"
+        >
+
+        <TextView
+            android:layout_marginStart="5dp"
+            android:layout_width="@dimen/mottramDP"
+            android:layout_height="@dimen/tvIcon"
+            android:text="@string/tv_NameChapters"
+            android:gravity="center_vertical"
+            android:textColor="@color/blue"
+            android:textSize="@dimen/sizeText"
+            android:textStyle="bold"
+            />
+
+        <EditText
+            android:id="@+id/tvName"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/tvIcon"
+            android:gravity="center_vertical"
+            android:hint="@string/tv_Input_nameGenres"
+            android:textSize="@dimen/sizeText"
+            android:textColor="@color/black"
+            android:paddingStart="5dp"
+            android:background="@drawable/custom_et"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/tenDP"
+        android:background="@drawable/custom_et"
+        >
+
+        <TextView
+            android:layout_marginStart="5dp"
+            android:layout_width="@dimen/mottramDP"
+            android:layout_height="@dimen/tvIcon"
+            android:text="@string/title_Link"
+            android:gravity="center_vertical"
+            android:textColor="@color/blue"
+            android:textSize="@dimen/sizeText"
+            android:textStyle="bold"
+            />
+
+        <EditText
+            android:id="@+id/tv_Link"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:hint="@string/tv_Input_nameGenres"
+            android:textSize="@dimen/sizeText"
+            android:textColor="@color/black"
+            android:paddingStart="5dp"
+            android:paddingBottom="5dp"
+            android:background="@drawable/custom_et"
+            android:minHeight="@dimen/tvIcon"
+            />
+
+    </LinearLayout>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnUpFile"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/tvIcon"
+        android:layout_marginTop="@dimen/tenDP"
+        android:layout_marginStart="260dp"
+        android:text="Chọn File"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:background="@drawable/custom_upfile"
+
+        />
+
+    <TextView
+        android:id="@+id/tv_error"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/red"
+        android:textSize="@dimen/sizeText"
+        android:layout_marginTop="@dimen/tenDP"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/twentyDP"
+        >
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnUpdate"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/tvIcon"
+            android:text="@string/tv_edit"
+            android:textColor="@color/white"
+            android:background="@drawable/button_disabled"
+            android:textAllCaps="false"
+            android:textSize="@dimen/sizeText"
+            />
+    </LinearLayout>
+
+</LinearLayout>

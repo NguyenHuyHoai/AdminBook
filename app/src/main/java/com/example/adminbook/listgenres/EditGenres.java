@@ -31,7 +31,7 @@ import java.util.Map;
 
 
 public class EditGenres extends BottomSheetDialogFragment {
-    FragmentEditGenresBinding editGenresBinding;
+    private FragmentEditGenresBinding editGenresBinding;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CollectionReference genresCollectionRef = db.collection("Genres");
     private CollectionReference booksCollectionRef = db.collection("Books");

@@ -32,11 +32,11 @@ import java.util.Map;
 
 public class Login extends AppCompatActivity {
 
-    ActivityLoginBinding binding;
-    FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-    FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
-    CollectionReference usersCollection = firebaseFirestore.collection("Users");
-    ProgressDialog progressDialog;
+    private ActivityLoginBinding binding;
+    private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+    private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+    private CollectionReference usersCollection = firebaseFirestore.collection("Users");
+    private ProgressDialog progressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -22,7 +22,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 
 public class InformationBook extends BottomSheetDialogFragment {
-    FragmentInformationBookBinding binding;
+    private FragmentInformationBookBinding binding;
 
     public interface OnInformationListener {
         void onUpdateSuccess();

@@ -29,8 +29,8 @@ import com.google.gson.Gson;
 
 
 public class ChangePassFragment extends Fragment {
-    FragmentChangePassBinding binding;
-    FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+    private FragmentChangePassBinding binding;
+    private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     private ItemUsers itemUsers;
     ProgressDialog progressDialog;
     @Override

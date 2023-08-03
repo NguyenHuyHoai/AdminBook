@@ -1,14 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".listchapters.ListChapterFragment">
+    android:orientation="vertical"
+    android:padding="@dimen/tenDP"
+    >
 
-    <!-- TODO: Update blank fragment layout -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+
+        <EditText
+            android:padding="@dimen/tenDP"
+            android:id="@+id/edSearch"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/tvIcon"
+            android:layout_weight="6"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:drawableEnd="@drawable/icon_search"
+            android:background="@drawable/custom_btn_add"
+            android:hint="Nhập nội dung tìm kiếm"
+            />
+
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnAdd"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/tvIcon"
+            android:layout_marginStart="@dimen/tenDP"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:layout_weight="2"
+            android:background="@drawable/custom_btn_add"
+            android:drawablePadding="10dp"
+            android:gravity="center"
+            android:text="@string/tv_add_user"
+            android:textAllCaps="false"
+            android:textColor="@color/blue"
+            android:textSize="@dimen/sizeText"
+            android:textStyle="bold" />
+    </LinearLayout>
+
     <TextView
+        android:id="@+id/tvName"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/tvIcon"
+        android:text="@string/tv_NameGenres"
+        android:textSize="16sp"
+        android:gravity= "center"
+        android:textStyle="bold"
+        android:background="@drawable/custom_list"
+        />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewChapters"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_marginTop="@dimen/tenDP" />
 
-</FrameLayout>
+</LinearLayout>

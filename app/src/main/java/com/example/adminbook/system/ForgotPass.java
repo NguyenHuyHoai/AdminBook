@@ -18,9 +18,9 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class ForgotPass extends AppCompatActivity {
 
-    ActivityForgotPassBinding binding;
-    FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-    ProgressDialog progressDialog;
+    private ActivityForgotPassBinding binding;
+    private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

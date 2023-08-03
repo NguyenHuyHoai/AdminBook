@@ -44,10 +44,10 @@ import java.util.List;
 
 
 public class ListBooksFragment extends Fragment {
-    FragmentListBooksBinding binding;
-    FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
-    CollectionReference booksCollection = firebaseFirestore.collection("Books");
-    CollectionReference bookGenresCollection = firebaseFirestore.collection("BookGenres");
+    private FragmentListBooksBinding binding;
+    private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+    private CollectionReference booksCollection = firebaseFirestore.collection("Books");
+    private CollectionReference bookGenresCollection = firebaseFirestore.collection("BookGenres");
 
     private BooksAdapter adapter;
     private List<ItemBooks> booksList;

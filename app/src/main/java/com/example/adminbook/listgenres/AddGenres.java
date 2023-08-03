@@ -28,9 +28,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class AddGenres extends BottomSheetDialogFragment {
-    FragmentAddGenresBinding binding;
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
-    CollectionReference genresCollectionRef = db.collection("Genres");
+    private FragmentAddGenresBinding binding;
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private CollectionReference genresCollectionRef = db.collection("Genres");
 
     public static AddGenres newInstance() {
         return new AddGenres();

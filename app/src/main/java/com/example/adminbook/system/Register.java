@@ -41,14 +41,13 @@ import java.util.List;
 
 public class Register extends AppCompatActivity {
 
-    ActivityRegisterBinding binding;
-
-    FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-    FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
-    CollectionReference usersCollection = firebaseFirestore.collection("Users");
-    FirebaseStorage storage = FirebaseStorage.getInstance();
-    StorageReference storageRef = storage.getReference().child("avatars");
-    ProgressDialog progressDialog;
+    private ActivityRegisterBinding binding;
+    private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+    private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+    private CollectionReference usersCollection = firebaseFirestore.collection("Users");
+    private FirebaseStorage storage = FirebaseStorage.getInstance();
+    private StorageReference storageRef = storage.getReference().child("avatars");
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -45,12 +45,12 @@ import java.util.UUID;
 
 public class EditBooks extends Fragment {
 
-    FragmentEditBooksBinding binding;
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
-    CollectionReference booksCollection = db.collection("Books");
-    FirebaseStorage storage = FirebaseStorage.getInstance();
-    StorageReference bookstorageRef = storage.getReference().child("imagebook");
-    ProgressDialog progressDialog;
+    private FragmentEditBooksBinding binding;
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private CollectionReference booksCollection = db.collection("Books");
+    private FirebaseStorage storage = FirebaseStorage.getInstance();
+    private StorageReference bookstorageRef = storage.getReference().child("imagebook");
+    private ProgressDialog progressDialog;
 
     private EditText title;
     private EditText author;

@@ -54,13 +54,13 @@ import java.util.Map;
 import java.util.UUID;
 
 public class AddBooks extends BottomSheetDialogFragment {
-    FragmentAddBooksBinding binding;
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
-    CollectionReference booksCollection = db.collection("Books");
-    CollectionReference genresCollection = db.collection("Genres");
-    CollectionReference bookGenresCollection = db.collection("BookGenres");
-    FirebaseStorage storage = FirebaseStorage.getInstance();
-    StorageReference bookstorageRef = storage.getReference().child("imagebook");
+    private FragmentAddBooksBinding binding;
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private CollectionReference booksCollection = db.collection("Books");
+    private CollectionReference genresCollection = db.collection("Genres");
+    private CollectionReference bookGenresCollection = db.collection("BookGenres");
+    private FirebaseStorage storage = FirebaseStorage.getInstance();
+    private StorageReference bookstorageRef = storage.getReference().child("imagebook");
 
     private static final int REQUEST_CAMERA_PERMISSION = 1;
     private static final int REQUEST_EXTERNAL_STORAGE_PERMISSION = 2;

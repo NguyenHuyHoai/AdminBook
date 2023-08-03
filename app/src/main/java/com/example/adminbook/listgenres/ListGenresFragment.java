@@ -24,9 +24,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ListGenresFragment extends Fragment {
-    FragmentListGenresBinding binding;
-    FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
-    CollectionReference genresCollection = firebaseFirestore.collection("Genres");
+    private FragmentListGenresBinding binding;
+    private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+    private CollectionReference genresCollection = firebaseFirestore.collection("Genres");
     private GenresAdapter adapter;
     private List<ItemGenres> genresList;
     public interface OnGenresListener {

@@ -46,12 +46,12 @@ import java.io.IOException;
 import java.util.UUID;
 
 public class InformationFragment extends Fragment {
-    FragmentInformationBinding binding;
-    FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-    FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
-    CollectionReference usersCollection = firebaseFirestore.collection("Users");
-    FirebaseStorage storage = FirebaseStorage.getInstance();
-    StorageReference storageRef = storage.getReference().child("avatars");
+    private FragmentInformationBinding binding;
+    private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+    private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+    private CollectionReference usersCollection = firebaseFirestore.collection("Users");
+    private FirebaseStorage storage = FirebaseStorage.getInstance();
+    private StorageReference storageRef = storage.getReference().child("avatars");
 
     private TextView tvUsenameMP;
     private TextView tvMota;
