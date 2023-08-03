@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".listusers.AddAdmin">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/twentyDP"
+        >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/tvIcon"
+            android:text="Cập nhật tài khoản"
+            android:textColor="@color/red"
+            android:textSize="@dimen/sizebtn"
+            android:textStyle="bold"
+            android:gravity="center"
+            />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/image"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/twentyDP"
+            android:layout_gravity="center"
+            />
+
+        <TextView
+            android:id="@+id/eTUser"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/tvIcon"
+            android:hint="@string/tv_User"
+            android:drawableStart="@drawable/icon_myaccount"
+            android:padding="@dimen/tenDP"
+            android:drawablePadding="@dimen/tenDP"
+            android:maxLines="1"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sizeText"
+            android:background="@drawable/custom_et"
+            android:layout_marginTop="@dimen/twentyDP"
+            android:gravity="center"
+            />
+
+        <TextView
+            android:id="@+id/eTEmail"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/tvIcon"
+            android:hint="@string/tv_Input_Email"
+            android:drawableStart="@drawable/icon_email"
+            android:padding="@dimen/tenDP"
+            android:drawablePadding="@dimen/tenDP"
+            android:maxLines="1"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sizeText"
+            android:layout_marginTop="@dimen/tenDP"
+            android:background="@drawable/custom_et"
+            android:gravity="center"
+            />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/tvIcon"
+            android:layout_marginTop="@dimen/tenDP"
+            >
+
+            <TextView
+                android:id="@+id/titleRole"
+                android:layout_width="@dimen/ninetyDP"
+                android:layout_height="@dimen/tvIcon"
+                android:text="Quyền"
+                android:gravity="center_vertical"
+                android:textSize="@dimen/sizeText"
+                android:layout_marginStart="@dimen/tenDP"
+                />
+
+            <RadioGroup
+                android:id="@+id/radioGroupRole"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_toEndOf="@+id/titleRole"
+                >
+
+                <RadioButton
+                    android:id="@+id/radioButtonAdmin"
+                    android:layout_width="@dimen/mottrammuoiDP"
+                    android:layout_height="wrap_content"
+                    android:text="Admin" />
+
+                <RadioButton
+                    android:id="@+id/radioButtonReader"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Reader" />
+            </RadioGroup>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/tvIcon"
+            android:layout_marginTop="@dimen/tenDP"
+            >
+
+            <TextView
+                android:id="@+id/titleStatus"
+                android:layout_width="@dimen/ninetyDP"
+                android:layout_height="@dimen/tvIcon"
+                android:text="Trạng thái"
+                android:gravity="center_vertical"
+                android:textSize="@dimen/sizeText"
+                android:layout_marginStart="@dimen/tenDP"
+                />
+
+            <RadioGroup
+                android:id="@+id/radioGroupStatus"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_toEndOf="@+id/titleStatus"
+                >
+
+                <RadioButton
+                    android:id="@+id/radioButtonLocked"
+                    android:layout_width="@dimen/mottrammuoiDP"
+                    android:layout_height="wrap_content"
+                    android:text="Bị khóa" />
+
+                <RadioButton
+                    android:id="@+id/radioButtonActive"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Đang hoạt động" />
+
+            </RadioGroup>
+        </RelativeLayout>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnUpdate"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/tvIcon"
+            android:layout_marginTop="@dimen/twentyDP"
+            android:background="@drawable/button_disabled"
+            android:text="@string/tv_edit"
+            android:textColor="@color/white"
+            android:textAllCaps="false"
+            android:textSize="@dimen/sizeText"
+            />
+
+    </LinearLayout>
+
+</FrameLayout>

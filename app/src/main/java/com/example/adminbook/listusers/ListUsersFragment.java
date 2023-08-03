@@ -16,6 +16,7 @@ import com.example.adminbook.databinding.FragmentListUsersBinding;
 import com.example.adminbook.listbooks.BooksAdapter;
 import com.example.adminbook.listbooks.ItemBooks;
 import com.example.adminbook.listbooks.ListBooksFragment;
+import com.example.adminbook.listgenres.AddGenres;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
@@ -68,17 +69,51 @@ public class ListUsersFragment extends Fragment {
         adapter.setUsersItemClickListener(new UsersAdapter.OnUsersItemClickListener() {
             @Override
             public void onUsersItemClick(ItemUsers usersItem) {
-                showIngormationBottomSheet(usersItem);
+                showEditUsersBottomSheet(usersItem);
             }
         });
 
         binding.btnAddUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                showAddUsers();
             }
         });
         return view;
+    }
+
+    private void showEditUsersBottomSheet(ItemUsers usersItem) {
+        EditUsers bottomSheetFragment = new EditUsers();
+
+        Bundle bundle = new Bundle();
+        bundle.putString("usersId", usersItem.getUsersId());
+        bundle.putString("avatar", usersItem.getAvatar());
+        bundle.putString("email", usersItem.getEmail());
+        bundle.putString("usersName", usersItem.getUsersName());
+        bundle.putString("admin", usersItem.getAdmin() ? "Admin" : "Reader");
+        bundle.putString("locked", usersItem.getLocked() ? "Bị khóa" : "Đang hoạt động");
+        bottomSheetFragment.setArguments(bundle);
+
+        // Thiết lập listener để nhận kết quả cập nhật từ EditGenres
+        bottomSheetFragment.setOnAdminAddedListener(new EditUsers.OnAdminAddedListener() {
+            @Override
+            public void onAdminAdded() {
+                loadUsersData("Tổng");
+            }
+        });
+        bottomSheetFragment.show(getParentFragmentManager(), bottomSheetFragment.getTag());
+    }
+
+
+    private void showAddUsers() {
+        AddUsers bottomSheetFragment = AddUsers.newInstance();
+        bottomSheetFragment.setOnAdminAddedListener(new AddUsers.OnAdminAddedListener() {
+            @Override
+            public void onAdminAdded() {
+                loadUsersData("Tổng");
+            }
+        });
+        bottomSheetFragment.show(getParentFragmentManager(), bottomSheetFragment.getTag());
     }
 
     private void loadUsersData(String selectedOption) {
@@ -114,7 +149,5 @@ public class ListUsersFragment extends Fragment {
                 }
             }
         });
-    }
-    private void showIngormationBottomSheet(ItemUsers usersItem) {
     }
 }
