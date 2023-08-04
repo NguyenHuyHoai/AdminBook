@@ -91,12 +91,6 @@ public class EditBooks extends Fragment {
                 uploadImageToStorage(imageBooks, booksId);
             }
         });
-        binding.btnCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                requireActivity().onBackPressed();
-            }
-        });
         return view;
     }
 
@@ -124,7 +118,7 @@ public class EditBooks extends Fragment {
                     .load(imageBook)
                     .placeholder(R.drawable.icon_load) // Hình ảnh tạm thời khi đang tải
                     .error(R.drawable.defaultavatar) // Hình ảnh lỗi nếu không tải được
-                    .into(binding.imageBooks);
+                    .into(binding.image);
         }
     }
     //Setup Button
@@ -257,7 +251,7 @@ public class EditBooks extends Fragment {
             if (requestCode == REQUEST_IMAGE_CAPTURE) {
                 Bundle extras = data.getExtras();
                 Bitmap imageBitmap = (Bitmap) extras.get("data");
-                binding.imageBooks.setImageBitmap(imageBitmap);
+                binding.image.setImageBitmap(imageBitmap);
 
                 previousImageBitmap = imageBitmap;
                 checkButtonState();
@@ -265,7 +259,7 @@ public class EditBooks extends Fragment {
                 Uri imageUri = data.getData();
                 try {
                     Bitmap imageBitmap = MediaStore.Images.Media.getBitmap(requireContext().getContentResolver(), imageUri);
-                    binding.imageBooks.setImageBitmap(imageBitmap);
+                    binding.image.setImageBitmap(imageBitmap);
 
                     previousImageBitmap = imageBitmap;
                     checkButtonState();

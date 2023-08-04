@@ -65,8 +65,10 @@ public class AddBooks extends BottomSheetDialogFragment {
     private static final int REQUEST_CAMERA_PERMISSION = 1;
     private static final int REQUEST_EXTERNAL_STORAGE_PERMISSION = 2;
     private static final int REQUEST_IMAGE_PICK = 3;
+    private static final int REQUEST_COVER_IMAGE_PICK = 5;
     private static final int REQUEST_IMAGE_CAPTURE = 4;
     private Bitmap previousImageBitmap;
+    private Bitmap previousCoverImageBitmap;
     ProgressDialog progressDialog;
 
     public static AddBooks newInstance() {
@@ -85,12 +87,10 @@ public class AddBooks extends BottomSheetDialogFragment {
                              Bundle savedInstanceState) {
         binding = FragmentAddBooksBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
-        setCancelable(false);
-        getDialog().setCanceledOnTouchOutside(false);
         progressDialog = new ProgressDialog(getActivity());
         setupAddButton();
 
-        binding.btnFileImage.setOnClickListener(new View.OnClickListener() {
+        binding.btnImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 openImageChooser();
@@ -101,12 +101,6 @@ public class AddBooks extends BottomSheetDialogFragment {
             public void onClick(View view) {
                 progressDialog.show();
                 addNewBook();
-            }
-        });
-        binding.btnCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dismiss();
             }
         });
         return view;
@@ -172,7 +166,7 @@ public class AddBooks extends BottomSheetDialogFragment {
             if (requestCode == REQUEST_IMAGE_CAPTURE) {
                 Bundle extras = data.getExtras();
                 Bitmap imageBitmap = (Bitmap) extras.get("data");
-                binding.imageMP.setImageBitmap(imageBitmap);
+                binding.image.setImageBitmap(imageBitmap);
 
                 previousImageBitmap = imageBitmap;
                 checkButtonState();
@@ -180,7 +174,7 @@ public class AddBooks extends BottomSheetDialogFragment {
                 Uri imageUri = data.getData();
                 try {
                     Bitmap imageBitmap = MediaStore.Images.Media.getBitmap(requireContext().getContentResolver(), imageUri);
-                    binding.imageMP.setImageBitmap(imageBitmap);
+                    binding.image.setImageBitmap(imageBitmap);
 
                     previousImageBitmap = imageBitmap;
                     checkButtonState();
@@ -190,6 +184,7 @@ public class AddBooks extends BottomSheetDialogFragment {
             }
         }
     }
+
     //Kiem tra các trường có bị trống và bật nút Add
     private void setupAddButton() {
         checkButtonState();
@@ -215,6 +210,14 @@ public class AddBooks extends BottomSheetDialogFragment {
     private boolean checkImageChanged() {
         // Kiểm tra xem previousImageBitmap có bị null hay không
         if (previousImageBitmap != null) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+    private boolean checkCoverChanged() {
+        // Kiểm tra xem previousImageBitmap có bị null hay không
+        if (previousCoverImageBitmap != null) {
             return false;
         } else {
             return true;
@@ -285,6 +288,7 @@ public class AddBooks extends BottomSheetDialogFragment {
                 } else {
                     binding.tvErrorAB.setText("");
                     binding.tvErrorAB.setText("Không có thể loại mà sách đang cần!");
+                    progressDialog.cancel();
                 }
             }
         });

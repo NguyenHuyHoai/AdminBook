@@ -112,28 +112,6 @@ public class EditUsers extends BottomSheetDialogFragment {
             } else {
                 binding.radioButtonActive.setChecked(true);
             }
-
-//            // Lấy giá trị của admin và locked từ bundle
-//            String adminValue = bundle.getString("admin");
-//            String lockedValue = bundle.getString("locked");
-//
-//            // Thiết lập giá trị cho RadioGroup Role
-//            if ("Admin".equals(adminValue)) {
-//                // Thiết lập lựa chọn Admin cho RadioGroup Role
-//                binding.radioButtonAdmin.setChecked(true);
-//            } else {
-//                // Thiết lập lựa chọn Reader cho RadioGroup Role
-//                binding.radioButtonReader.setChecked(true);
-//            }
-//
-//            // Thiết lập giá trị cho RadioGroup Status
-//            if ("Bị khóa".equals(lockedValue)) {
-//                // Thiết lập lựa chọn Bị khóa cho RadioGroup Status
-//                binding.radioButtonLocked.setChecked(true);
-//            } else {
-//                // Thiết lập lựa chọn Đang hoạt động cho RadioGroup Status
-//                binding.radioButtonActive.setChecked(true);
-//            }
         }
     }
 
