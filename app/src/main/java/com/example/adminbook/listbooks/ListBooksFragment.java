@@ -48,6 +48,7 @@ public class ListBooksFragment extends Fragment {
     private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     private CollectionReference booksCollection = firebaseFirestore.collection("Books");
     private CollectionReference bookGenresCollection = firebaseFirestore.collection("BookGenres");
+    private CollectionReference chaptersCollection = firebaseFirestore.collection("Chapters");
 
     private BooksAdapter adapter;
     private List<ItemBooks> booksList;
@@ -226,13 +227,25 @@ public class ListBooksFragment extends Fragment {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 document.getReference().delete();
-                                booksCollection
-                                        .document(booksItem.getBooksId())
-                                        .delete()
-                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+
+                                chaptersCollection.whereEqualTo("booksId", booksItem.getBooksId()).get()
+                                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                             @Override
-                                            public void onSuccess(Void aVoid) {
-                                                Toast.makeText(getContext(), "Đã xóa!", Toast.LENGTH_SHORT).show();
+                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                if (task.isSuccessful()){
+                                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                                        document.getReference().delete();
+                                                        booksCollection
+                                                                .document(booksItem.getBooksId())
+                                                                .delete()
+                                                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                    @Override
+                                                                    public void onSuccess(Void aVoid) {
+                                                                        Toast.makeText(getContext(), "Đã xóa!", Toast.LENGTH_SHORT).show();
+                                                                    }
+                                                                });
+                                                    }
+                                                }
                                             }
                                         });
                             }
