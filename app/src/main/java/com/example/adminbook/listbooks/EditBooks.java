@@ -49,7 +49,8 @@ public class EditBooks extends Fragment {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CollectionReference booksCollection = db.collection("Books");
     private FirebaseStorage storage = FirebaseStorage.getInstance();
-    private StorageReference bookstorageRef = storage.getReference().child("imagebook");
+    private StorageReference imageStorageRef = storage.getReference().child("imagebook");
+    private StorageReference coverStorageRef = storage.getReference().child("coverbook");
     private ProgressDialog progressDialog;
 
     private EditText title;
@@ -57,6 +58,7 @@ public class EditBooks extends Fragment {
     private EditText genres;
     private EditText description;
     private Bitmap previousImageBitmap;
+    private Bitmap previousCoverBitmap;
     private String previousTitle;
     private String previousAuthor;
     private String previousDescription;
@@ -64,11 +66,11 @@ public class EditBooks extends Fragment {
 
     private String booksId;
     private String imageBooks;
+    private String coverBooks;
 
-    private static final int REQUEST_CAMERA_PERMISSION = 1;
     private static final int REQUEST_EXTERNAL_STORAGE_PERMISSION = 2;
-    private static final int REQUEST_IMAGE_CAPTURE = 3;
     private static final int REQUEST_IMAGE_PICK = 4;
+    private static final int REQUEST_COVER_IMAGE_PICK = 5;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -81,14 +83,14 @@ public class EditBooks extends Fragment {
         binding.btnFileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openImageChooser();
+                openImageFile();
             }
         });
         binding.btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 progressDialog.show();
-                uploadImageToStorage(imageBooks, booksId);
+                uploadImageToStorage();
             }
         });
         return view;
@@ -119,6 +121,14 @@ public class EditBooks extends Fragment {
                     .placeholder(R.drawable.icon_load) // Hình ảnh tạm thời khi đang tải
                     .error(R.drawable.defaultavatar) // Hình ảnh lỗi nếu không tải được
                     .into(binding.image);
+            // Lấy ảnh
+            String coverBook = bundle.getString("CoverImage");
+            coverBooks = coverBook;
+            Glide.with(this)
+                    .load(coverBook)
+                    .placeholder(R.drawable.icon_load) // Hình ảnh tạm thời khi đang tải
+                    .error(R.drawable.defaultavatar) // Hình ảnh lỗi nếu không tải được
+                    .into(binding.theme);
         }
     }
     //Setup Button
@@ -130,6 +140,7 @@ public class EditBooks extends Fragment {
         description = binding.edDescription;
 
         previousImageBitmap = null;
+        previousCoverBitmap = null;
         previousTitle = title.getText().toString();
         previousAuthor = author.getText().toString();
         previousGenres = genres.getText().toString();
@@ -146,6 +157,13 @@ public class EditBooks extends Fragment {
     }
     private boolean checkImageChanged() {
         if (previousImageBitmap != null) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    private boolean checkCoverChanged() {
+        if (previousCoverBitmap != null) {
             return true;
         } else {
             return false;
@@ -181,7 +199,7 @@ public class EditBooks extends Fragment {
         }
     };
     private void checkButtonState() {
-        boolean isChanged = checkTitleChanged() || checkAuthorChanged()  || checkGenresChanged() || checkDescriptionChanged() || checkImageChanged();
+        boolean isChanged = checkTitleChanged() || checkAuthorChanged()  || checkGenresChanged() || checkDescriptionChanged() || checkImageChanged() || checkCoverChanged();
         binding.btnUpdate.setEnabled(isChanged);
         if (isChanged) {
             binding.btnUpdate.setBackgroundResource(R.drawable.button_enabled);
@@ -190,39 +208,30 @@ public class EditBooks extends Fragment {
         }
     }
     //Input Image
-    private void openImageChooser() {
+    private void openImageFile() {
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
         builder.setTitle("Chọn ảnh");
-        String[] options = {"Chụp ảnh", "Chọn ảnh từ thiết bị"};
+        String[] options = {"Chọn ảnh đại diện", "Chọn ảnh bìa"};
         builder.setItems(options, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 switch (i) {
                     case 0:
-                        // Chọn chụp ảnh
-                        if (checkCameraPermission()) {
-                            dispatchTakePictureIntent();
+                        // Chọn ảnh đại diện
+                        if (checkExternalStoragePermission()) {
+                            openGallery();
                         }
                         break;
                     case 1:
-                        // Chọn ảnh từ thiết bị
+                        // Chọn ảnh bìa
                         if (checkExternalStoragePermission()) {
-                            openGallery();
+                            openGalleryForCoverImage();
                         }
                         break;
                 }
             }
         });
         builder.show();
-    }
-    private boolean checkCameraPermission() {
-        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            // Nếu chưa có quyền, yêu cầu quyền từ người dùng
-            requestPermissions(new String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA_PERMISSION);
-            return false;
-        } else {
-            return true;
-        }
     }
     private boolean checkExternalStoragePermission() {
         if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ||
@@ -234,34 +243,40 @@ public class EditBooks extends Fragment {
             return true;
         }
     }
-    private void dispatchTakePictureIntent() {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePictureIntent.resolveActivity(requireContext().getPackageManager()) != null) {
-            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-        }
-    }
     private void openGallery() {
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(intent, REQUEST_IMAGE_PICK);
+    }
+    private void openGalleryForCoverImage() {
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(intent, REQUEST_COVER_IMAGE_PICK);
     }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == REQUEST_IMAGE_CAPTURE) {
-                Bundle extras = data.getExtras();
-                Bitmap imageBitmap = (Bitmap) extras.get("data");
-                binding.image.setImageBitmap(imageBitmap);
-
-                previousImageBitmap = imageBitmap;
-                checkButtonState();
-            } else if (requestCode == REQUEST_IMAGE_PICK) {
+            if (requestCode == REQUEST_IMAGE_PICK) {
+                // Xử lý chọn ảnh đại diện
                 Uri imageUri = data.getData();
                 try {
                     Bitmap imageBitmap = MediaStore.Images.Media.getBitmap(requireContext().getContentResolver(), imageUri);
+                    // Hiển thị ảnh đại diện trong ImageView tương ứng
                     binding.image.setImageBitmap(imageBitmap);
-
+                    // Lưu ảnh đại diện đã chọn để sử dụng sau này
                     previousImageBitmap = imageBitmap;
+                    checkButtonState();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else if (requestCode == REQUEST_COVER_IMAGE_PICK) {
+                // Xử lý chọn ảnh bìa
+                Uri imageUri = data.getData();
+                try {
+                    Bitmap imageBitmap = MediaStore.Images.Media.getBitmap(requireContext().getContentResolver(), imageUri);
+                    // Hiển thị ảnh bìa trong ImageView tương ứng
+                    binding.theme.setImageBitmap(imageBitmap);
+                    // Lưu ảnh bìa đã chọn để sử dụng sau này
+                    previousCoverBitmap = imageBitmap;
                     checkButtonState();
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -270,35 +285,114 @@ public class EditBooks extends Fragment {
         }
     }
     //Out Image
-    private void uploadImageToStorage(String imageBooks, String booksId) {
+    private void uploadImageToStorage() {
         if (previousImageBitmap != null) {
+            if (previousCoverBitmap != null)
+            {
+                final String[] a = new String[1];
+                final String[] b = new String[1];
+                // Tạo ByteArrayOutputStream để nén ảnh thành một mảng byte
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                previousImageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                byte[] data = baos.toByteArray();
+                String filename = UUID.randomUUID().toString() + ".jpg";
+
+                StorageReference imageRef = imageStorageRef.child(filename);
+                UploadTask uploadTask = imageRef.putBytes(data);
+                uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        imageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                // Ở đây, bạn có thể lấy URL và cập nhật thông tin vào Collection của tài khoản đang đăng nhập
+                                String imageUrl = uri.toString();
+                                // Lưu imageURL vào biến a
+                                a[0] = imageUrl;
+                                // Check if both URLs are available
+                                if (a[0] != null && b[0] != null) {
+                                    updateUserInfo(a[0], b[0]);
+                                }
+                            }
+                        });
+                    }
+                });
+                // Tạo ByteArrayOutputStream để nén ảnh thành một mảng byte
+                ByteArrayOutputStream baoss = new ByteArrayOutputStream();
+                previousCoverBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                byte[] dataa = baoss.toByteArray();
+                String filenamee = UUID.randomUUID().toString() + ".jpg";
+
+                StorageReference coverRef = coverStorageRef.child(filenamee);
+                UploadTask uploadTaskk = coverRef.putBytes(dataa);
+                uploadTaskk.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        coverRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                // Ở đây, bạn có thể lấy URL và cập nhật thông tin vào Collection của tài khoản đang đăng nhập
+                                String coverUrl = uri.toString();
+                                // Lưu coverURL vào biến b
+                                b[0] = coverUrl;
+                                // Check if both URLs are available
+                                if (a[0] != null && b[0] != null) {
+                                    updateUserInfo(a[0], b[0]);
+                                }
+                            }
+                        });
+                    }
+                });
+            }
+            else {
+                // Tạo ByteArrayOutputStream để nén ảnh thành một mảng byte
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                previousImageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                byte[] data = baos.toByteArray();
+                String filename = UUID.randomUUID().toString() + ".jpg";
+
+                StorageReference imageRef = imageStorageRef.child(filename);
+                UploadTask uploadTask = imageRef.putBytes(data);
+                uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        imageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                // Ở đây, bạn có thể lấy URL và cập nhật thông tin vào Collection của tài khoản đang đăng nhập
+                                String imageUrl = uri.toString();
+                                updateUserInfo(imageUrl, coverBooks);
+                            }
+                        });
+                    }
+                });
+            }
+        }
+        else {
             // Tạo ByteArrayOutputStream để nén ảnh thành một mảng byte
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            previousImageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+            previousCoverBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
             byte[] data = baos.toByteArray();
             String filename = UUID.randomUUID().toString() + ".jpg";
 
-            StorageReference imageRef = bookstorageRef.child(filename);
-            UploadTask uploadTask = imageRef.putBytes(data);
+            StorageReference coverRef = coverStorageRef.child(filename);
+            UploadTask uploadTask = coverRef.putBytes(data);
             uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    imageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    coverRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                         @Override
                         public void onSuccess(Uri uri) {
                             // Ở đây, bạn có thể lấy URL và cập nhật thông tin vào Collection của tài khoản đang đăng nhập
-                            String imageUrl = uri.toString();
-                            updateUserInfo(imageUrl, booksId);
+                            String coverUrl = uri.toString();
+                            updateUserInfo(imageBooks,coverUrl);
                         }
                     });
                 }
             });
         }
-        else {
-            updateUserInfo(imageBooks,booksId);
-        }
     }
-    private void updateUserInfo(String imageUrl, String booksId) {
+    private void updateUserInfo(String imageUrl, String coverUrl) {
         String newDescription = description.getText().toString();
         String newTitle = title.getText().toString();
         String newAuthor = author.getText().toString();
@@ -308,7 +402,7 @@ public class EditBooks extends Fragment {
                 .update(
                         "genders", newGenres,
                         "description", newDescription,
-                        "imageBook", imageUrl,"title", newTitle, "author", newAuthor)
+                        "imageBook", imageUrl,"title", newTitle, "author", newAuthor,"coverImage", coverUrl)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {

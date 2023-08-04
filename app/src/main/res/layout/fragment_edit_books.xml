@@ -33,6 +33,12 @@
                 android:layout_marginTop="@dimen/twentyDP"
                 >
 
+                <ImageView
+                    android:id="@+id/theme"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    />
+
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/image"
                     android:layout_width="150dp"
@@ -41,11 +47,6 @@
                     android:layout_alignParentBottom="true"
                     />
 
-                <ImageView
-                    android:id="@+id/theme"
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    />
             </RelativeLayout>
 
             <androidx.appcompat.widget.AppCompatButton

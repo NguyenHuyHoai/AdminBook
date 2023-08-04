@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -43,6 +44,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -52,6 +54,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class AddBooks extends BottomSheetDialogFragment {
     private FragmentAddBooksBinding binding;
@@ -60,16 +63,17 @@ public class AddBooks extends BottomSheetDialogFragment {
     private CollectionReference genresCollection = db.collection("Genres");
     private CollectionReference bookGenresCollection = db.collection("BookGenres");
     private FirebaseStorage storage = FirebaseStorage.getInstance();
-    private StorageReference bookstorageRef = storage.getReference().child("imagebook");
+    private StorageReference imageStorageRef = storage.getReference().child("imagebook");
+    private StorageReference coverStorageRef = storage.getReference().child("coverbook");
 
-    private static final int REQUEST_CAMERA_PERMISSION = 1;
     private static final int REQUEST_EXTERNAL_STORAGE_PERMISSION = 2;
     private static final int REQUEST_IMAGE_PICK = 3;
     private static final int REQUEST_COVER_IMAGE_PICK = 5;
-    private static final int REQUEST_IMAGE_CAPTURE = 4;
     private Bitmap previousImageBitmap;
     private Bitmap previousCoverImageBitmap;
     ProgressDialog progressDialog;
+    private String imageBook;
+    private String coverBook;
 
     public static AddBooks newInstance() {
         return new AddBooks();
@@ -93,7 +97,7 @@ public class AddBooks extends BottomSheetDialogFragment {
         binding.btnImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openImageChooser();
+                openImageFile();
             }
         });
         binding.btnAdd.setOnClickListener(new View.OnClickListener() {
@@ -105,39 +109,31 @@ public class AddBooks extends BottomSheetDialogFragment {
         });
         return view;
     }
-    private void openImageChooser() {
+    //input Image
+    private void openImageFile() {
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
         builder.setTitle("Chọn ảnh");
-        String[] options = {"Chụp ảnh", "Chọn ảnh từ thiết bị"};
+        String[] options = {"Chọn ảnh đại diện", "Chọn ảnh bìa"};
         builder.setItems(options, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 switch (i) {
                     case 0:
-                        // Chọn chụp ảnh
-                        if (checkCameraPermission()) {
-                            dispatchTakePictureIntent();
+                        // Chọn ảnh đại diện
+                        if (checkExternalStoragePermission()) {
+                            openGallery();
                         }
                         break;
                     case 1:
-                        // Chọn ảnh từ thiết bị
+                        // Chọn ảnh bìa
                         if (checkExternalStoragePermission()) {
-                            openGallery();
+                            openGalleryForCoverImage();
                         }
                         break;
                 }
             }
         });
         builder.show();
-    }
-    private boolean checkCameraPermission() {
-        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            // Nếu chưa có quyền, yêu cầu quyền từ người dùng
-            requestPermissions(new String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA_PERMISSION);
-            return false;
-        } else {
-            return true;
-        }
     }
     private boolean checkExternalStoragePermission() {
         if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ||
@@ -149,34 +145,40 @@ public class AddBooks extends BottomSheetDialogFragment {
             return true;
         }
     }
-    private void dispatchTakePictureIntent() {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePictureIntent.resolveActivity(requireContext().getPackageManager()) != null) {
-            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-        }
-    }
     private void openGallery() {
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(intent, REQUEST_IMAGE_PICK);
+    }
+    private void openGalleryForCoverImage() {
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(intent, REQUEST_COVER_IMAGE_PICK);
     }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == REQUEST_IMAGE_CAPTURE) {
-                Bundle extras = data.getExtras();
-                Bitmap imageBitmap = (Bitmap) extras.get("data");
-                binding.image.setImageBitmap(imageBitmap);
-
-                previousImageBitmap = imageBitmap;
-                checkButtonState();
-            } else if (requestCode == REQUEST_IMAGE_PICK) {
+            if (requestCode == REQUEST_IMAGE_PICK) {
+                // Xử lý chọn ảnh đại diện
                 Uri imageUri = data.getData();
                 try {
                     Bitmap imageBitmap = MediaStore.Images.Media.getBitmap(requireContext().getContentResolver(), imageUri);
+                    // Hiển thị ảnh đại diện trong ImageView tương ứng
                     binding.image.setImageBitmap(imageBitmap);
-
+                    // Lưu ảnh đại diện đã chọn để sử dụng sau này
                     previousImageBitmap = imageBitmap;
+                    checkButtonState();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else if (requestCode == REQUEST_COVER_IMAGE_PICK) {
+                // Xử lý chọn ảnh bìa
+                Uri imageUri = data.getData();
+                try {
+                    Bitmap imageBitmap = MediaStore.Images.Media.getBitmap(requireContext().getContentResolver(), imageUri);
+                    // Hiển thị ảnh bìa trong ImageView tương ứng
+                    binding.theme.setImageBitmap(imageBitmap);
+                    // Lưu ảnh bìa đã chọn để sử dụng sau này
+                    previousCoverImageBitmap = imageBitmap;
                     checkButtonState();
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -184,8 +186,7 @@ public class AddBooks extends BottomSheetDialogFragment {
             }
         }
     }
-
-    //Kiem tra các trường có bị trống và bật nút Add
+    //Setup Button
     private void setupAddButton() {
         checkButtonState();
         // Thêm TextChangedListener cho các EditText
@@ -229,7 +230,7 @@ public class AddBooks extends BottomSheetDialogFragment {
         String listGenres = binding.edListGenres.getText().toString().trim();
         String description = binding.edDescription.getText().toString().trim();
 
-        boolean isAnyFieldEmpty = nameBook.isEmpty() || nameAuthor.isEmpty() || listGenres.isEmpty() || description.isEmpty() || checkImageChanged();
+        boolean isAnyFieldEmpty = nameBook.isEmpty() || nameAuthor.isEmpty() || listGenres.isEmpty() || description.isEmpty() || checkImageChanged() || checkCoverChanged();
 
         if (isAnyFieldEmpty) {
             binding.btnAdd.setEnabled(false);
@@ -239,51 +240,74 @@ public class AddBooks extends BottomSheetDialogFragment {
             binding.btnAdd.setBackgroundResource(R.drawable.button_enabled);
         }
     }
-    //Out imageBook
+    //Output
     private void addNewBook() {
+        String genres = binding.edListGenres.getText().toString();
+        List<String> genresList = Arrays.asList(genres.split(", "));
         String title = binding.edNameBook.getText().toString();
         String author = binding.edNameAuthor.getText().toString();
-        String genres = binding.edListGenres.getText().toString();
         String description = binding.edDescription.getText().toString();
-        List<String> genresList = Arrays.asList(genres.split(", "));
         List<String> chapter = new ArrayList<>();
+        final String[] a = new String[1];
+        final String[] b = new String[1];
 
         checkGenresExist(genresList, new OnSuccessListener<Boolean>() {
             @Override
             public void onSuccess(Boolean allGenresExist) {
                 if (allGenresExist) {
-
-                    // Chuyển đổi ảnh Bitmap thành mảng byte
+                    // Chuyển đổi ảnh đại diện thành mảng byte
                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
                     previousImageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-                    byte[] imageData = baos.toByteArray();
+                    byte[] avatarImageData = baos.toByteArray();
 
-                    String filename = UUID.randomUUID().toString() + ".jpg";
+                    // Chuyển đổi ảnh bìa thành mảng byte
+                    ByteArrayOutputStream baosCover = new ByteArrayOutputStream();
+                    previousCoverImageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baosCover);
+                    byte[] coverImageData = baosCover.toByteArray();
 
-//                    StorageReference storageRef = FirebaseStorage.getInstance().getReference();
-                    StorageReference imageStorageRef = bookstorageRef.child(filename);
+                    // Tải ảnh đại diện lên Storage với tên ngẫu nhiên bắt đầu bằng "image"
+                    String avatarImageFileName = UUID.randomUUID().toString() + ".jpg";
+                    // Tải ảnh bìa lên Storage với tên ngẫu nhiên bắt đầu bằng "cover"
+                    String coverImageFileName = UUID.randomUUID().toString() + ".jpg";
 
-                    imageStorageRef.putBytes(imageData)
-                            .addOnSuccessListener(taskSnapshot -> {
-
-                                imageStorageRef.getDownloadUrl()
-                                        .addOnSuccessListener(uri -> {
-                                            String imageURL = uri.toString();
-                                            // Sau khi có đường dẫn ảnh, lưu thông tin sách vào Firestore
-                                            saveBooksInfoToFirestore(title, author, description, genresList, imageURL, chapter);
-                                        })
-                                        .addOnFailureListener(e -> {
-                                            binding.tvErrorAB.setText("");
-                                            binding.tvErrorAB.setText("Không thể lấy đường dẫn tải ảnh!");
-                                            progressDialog.cancel();
-                                        });
-                            })
-                            .addOnFailureListener(e -> {
-                                binding.tvErrorAB.setText("");
-                                binding.tvErrorAB.setText("Không thể tải ảnh lên!");
-                                progressDialog.cancel();
+                    imageStorageRef.child(avatarImageFileName).putBytes(avatarImageData)
+                            .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                @Override
+                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                    imageStorageRef.child(avatarImageFileName).getDownloadUrl()
+                                            .addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                                @Override
+                                                public void onSuccess(Uri uri) {
+                                                    String imageURL = uri.toString();
+                                                    // Lưu imageURL vào biến a
+                                                    a[0] = imageURL;
+                                                    // Check if both URLs are available
+                                                    if (a[0] != null && b[0] != null) {
+                                                        saveBooksInfoToFirestore(title, author, description, genresList, a[0], b[0], chapter);
+                                                    }
+                                                }
+                                            });
+                                }
                             });
-
+                    coverStorageRef.child(coverImageFileName).putBytes(coverImageData)
+                            .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                @Override
+                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                    coverStorageRef.child(coverImageFileName).getDownloadUrl()
+                                            .addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                                @Override
+                                                public void onSuccess(Uri uri) {
+                                                    String coverURL = uri.toString();
+                                                    // Lưu coverURL vào biến b
+                                                    b[0] = coverURL;
+                                                    // Check if both URLs are available
+                                                    if (a[0] != null && b[0] != null) {
+                                                        saveBooksInfoToFirestore(title, author, description, genresList, a[0], b[0], chapter);
+                                                    }
+                                                }
+                                            });
+                                }
+                            });
 
                 } else {
                     binding.tvErrorAB.setText("");
@@ -293,6 +317,57 @@ public class AddBooks extends BottomSheetDialogFragment {
             }
         });
     }
+
+    private void saveBooksInfoToFirestore(String title, String author, String description,
+                                              List<String> genresList,String imageBook, String coverBook, List<String> chapter) {
+            ItemBooks newBook = new ItemBooks();
+            newBook.setTitle(title);
+            newBook.setAuthor(author);
+            newBook.setDescription(description);
+            newBook.setGenres(genresList);
+            newBook.setRating(0.0f);
+            newBook.setRatingsCount(0);
+            newBook.setViewsCount(0);
+            newBook.setImageBook(imageBook);
+            newBook.setCoverImage(coverBook);
+            newBook.setCreationTimestamp(Timestamp.now());
+            newBook.setChapter(chapter);
+
+            booksCollection.add(newBook)
+                    .addOnSuccessListener(documentReference -> {
+                        String bookId = documentReference.getId();
+                        documentReference.update("booksId", bookId);
+
+                        for (String genresName : genresList) {
+                            // Tạo một document trong collection "BookGenres" để thể hiện mối quan hệ nhiều - nhiều
+                            getGenresIdFromName(genresName, genresId -> {
+                                if (genresId != null) {
+                                    // Nếu tìm thấy genreId cho genreName, tiến hành thêm document vào collection "BookGenres"
+                                    String bookGenresId = "books_" + bookId + "_genres_" + genresId;
+                                    // Tạo một Map chứa thông tin về mối quan hệ giữa sách và thể loại sách
+                                    Map<String, Object> bookGenreData = new HashMap<>();
+                                    bookGenreData.put("booksId", bookId);
+                                    bookGenreData.put("genresId", genresId);
+                                    // Thêm tài liệu vào collection "BookGenres" với bookGenresId là id của mối quan hệ
+                                    bookGenresCollection.document(bookGenresId).set(bookGenreData);
+                                }
+                            });
+                        }
+                        // Gọi phương thức của interface để thông báo cho ListGenresFragment
+                        if (booksAddedListener != null) {
+                            booksAddedListener.onBooksAdded();
+                        }
+                        if (isAdded() && getActivity() != null) {
+                            progressDialog.cancel();
+                            showSuccessDialog();
+                        }
+                    })
+                    .addOnFailureListener(e -> {
+                        progressDialog.cancel();
+                        showFailureDialog();
+                    });
+        }
+
     private void checkGenresExist(List<String> genresList, OnSuccessListener<Boolean> listener) {
         final int[] existingGenresCount = {0};
 
@@ -313,62 +388,6 @@ public class AddBooks extends BottomSheetDialogFragment {
             });
         }
     }
-    private void saveBooksInfoToFirestore(String title, String author, String description,
-                                          List<String> genresList, String imageURL, List<String> chapter) {
-        ItemBooks newBook = new ItemBooks();
-        newBook.setTitle(title);
-        newBook.setAuthor(author);
-        newBook.setDescription(description);
-        newBook.setGenres(genresList);
-        newBook.setRating(0.0f);
-        newBook.setRatingsCount(0);
-        newBook.setViewsCount(0);
-        newBook.setImageBook(imageURL);
-        newBook.setCreationTimestamp(Timestamp.now());
-        newBook.setChapter(chapter);
-        booksCollection.add(newBook)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        String bookId = documentReference.getId();
-                        documentReference.update("booksId", bookId);
-
-                        for (String genresName : genresList) {
-                            // Tạo một document trong collection "BookGenres" để thể hiện mối quan hệ nhiều - nhiều
-                            getGenresIdFromName(genresName, new OnSuccessListener<String>() {
-                                @Override
-                                public void onSuccess(String genresId) {
-                                    if (genresId != null) {
-                                        // Nếu tìm thấy genreId cho genreName, tiến hành thêm document vào collection "BookGenres"
-                                        String bookGenresId = "books_" + bookId + "_genres_" + genresId;
-                                        // Tạo một Map chứa thông tin về mối quan hệ giữa sách và thể loại sách
-                                        Map<String, Object> bookGenreData = new HashMap<>();
-                                        bookGenreData.put("booksId", bookId);
-                                        bookGenreData.put("genresId", genresId);
-                                        // Thêm tài liệu vào collection "BookGenres" với bookGenresId là id của mối quan hệ
-                                        bookGenresCollection.document(bookGenresId).set(bookGenreData);
-                                    }
-                                }
-                            });
-                        }
-                        // Gọi phương thức của interface để thông báo cho ListGenresFragment
-                        if (booksAddedListener != null) {
-                            booksAddedListener.onBooksAdded();
-                        }
-                        if (isAdded() && getActivity() != null) {
-                            progressDialog.cancel();
-                            showSuccessDialog();
-                        }
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        progressDialog.cancel();
-                        showFailureDialog();
-                    }
-                });
-    }
     private void getGenresIdFromName(String genresName, OnSuccessListener<String> listener) {
         // Thực hiện truy vấn vào collection "Genres" để lấy genreId tương ứng với genreName
         genresCollection.whereEqualTo("genresName", genresName)
@@ -387,6 +406,7 @@ public class AddBooks extends BottomSheetDialogFragment {
                     }
                 });
     }
+
     // Hàm hiển thị Dialog thành công và thất bại
     public void showFailureDialog() {
         new AlertDialog.Builder(getActivity())

@@ -14,11 +14,30 @@ public class ItemBooks {
     private int ratingsCount;
     private int viewsCount;
     private String imageBook;
+    private String CoverImage;
     private Timestamp creationTimestamp;
     private List<String> chapter;
 
     public ItemBooks() {
     }
+
+    public ItemBooks(String booksId, String title, String author, String description,
+                     List<String> genres, float rating, int ratingsCount, int viewsCount,
+                     String imageBook, String coverImage, Timestamp creationTimestamp, List<String> chapter) {
+        this.booksId = booksId;
+        this.title = title;
+        this.author = author;
+        this.description = description;
+        this.genres = genres;
+        this.rating = rating;
+        this.ratingsCount = ratingsCount;
+        this.viewsCount = viewsCount;
+        this.imageBook = imageBook;
+        CoverImage = coverImage;
+        this.creationTimestamp = creationTimestamp;
+        this.chapter = chapter;
+    }
+
     public ItemBooks(String booksId, String title, String author, String description,
                      List<String> genres, float rating, int ratingsCount, int viewsCount,
                      String imageBook, Timestamp creationTimestamp, List<String> chapter) {
@@ -121,5 +140,13 @@ public class ItemBooks {
 
     public void setChapter(List<String> chapter) {
         this.chapter = chapter;
+    }
+
+    public String getCoverImage() {
+        return CoverImage;
+    }
+
+    public void setCoverImage(String coverImage) {
+        CoverImage = coverImage;
     }
 }

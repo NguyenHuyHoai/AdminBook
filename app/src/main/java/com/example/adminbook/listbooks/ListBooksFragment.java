@@ -114,6 +114,7 @@ public class ListBooksFragment extends Fragment {
         bundle.putStringArrayList("genres", genresArrayList);
         bundle.putString("description", booksItem.getDescription());
         bundle.putString("imageBook", booksItem.getImageBook());
+        bundle.putString("CoverImage", booksItem.getCoverImage());
         bottomSheetFragment.setArguments(bundle);
 
         // Thiết lập listener để nhận kết quả cập nhật từ EditGenres
