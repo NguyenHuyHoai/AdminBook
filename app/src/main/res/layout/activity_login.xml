@@ -77,7 +77,8 @@
                 android:text="@string/tv_Login"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
-                android:textSize="@dimen/sizeText" />
+                android:textSize="@dimen/sizeText"
+                />
 
 
             <TextView

@@ -369,27 +369,36 @@ public class EditBooks extends Fragment {
             }
         }
         else {
-            // Tạo ByteArrayOutputStream để nén ảnh thành một mảng byte
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            previousCoverBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-            byte[] data = baos.toByteArray();
-            String filename = UUID.randomUUID().toString() + ".jpg";
 
-            StorageReference coverRef = coverStorageRef.child(filename);
-            UploadTask uploadTask = coverRef.putBytes(data);
-            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    coverRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                        @Override
-                        public void onSuccess(Uri uri) {
-                            // Ở đây, bạn có thể lấy URL và cập nhật thông tin vào Collection của tài khoản đang đăng nhập
-                            String coverUrl = uri.toString();
-                            updateUserInfo(imageBooks,coverUrl);
-                        }
-                    });
-                }
-            });
+            if (previousCoverBitmap != null)
+            {
+                // Tạo ByteArrayOutputStream để nén ảnh thành một mảng byte
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                previousCoverBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                byte[] data = baos.toByteArray();
+                String filename = UUID.randomUUID().toString() + ".jpg";
+
+                StorageReference coverRef = coverStorageRef.child(filename);
+                UploadTask uploadTask = coverRef.putBytes(data);
+                uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        coverRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                // Ở đây, bạn có thể lấy URL và cập nhật thông tin vào Collection của tài khoản đang đăng nhập
+                                String coverUrl = uri.toString();
+                                updateUserInfo(imageBooks,coverUrl);
+                            }
+                        });
+                    }
+                });
+            }
+            else
+            {
+                updateUserInfo(imageBooks,coverBooks);
+            }
+
         }
     }
     private void updateUserInfo(String imageUrl, String coverUrl) {

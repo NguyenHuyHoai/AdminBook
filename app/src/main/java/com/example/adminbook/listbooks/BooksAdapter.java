@@ -34,12 +34,15 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.ViewHolder>{
         this.booksList = booksList;
         this.context = context;
     }
+
+    public void setBooksList(List<ItemBooks> booksList) {
+        this.booksList = booksList;
+    }
     @NonNull
     @Override
     public BooksAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         ItemBooksBinding binding = ItemBooksBinding.inflate(layoutInflater, parent, false);
-
         return new BooksAdapter.ViewHolder(binding);
     }
 

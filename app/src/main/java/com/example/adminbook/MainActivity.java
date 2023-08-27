@@ -13,6 +13,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -138,6 +139,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }else if (id == R.id.nav_myproject) {
             if(mCurrentFragment != FRAGMENT_INFORMATION)
             {
+
                 Gson gson = new Gson();
                 String itemUsersJson = gson.toJson(itemUsers);
                 InformationFragment informationFragment = new InformationFragment();

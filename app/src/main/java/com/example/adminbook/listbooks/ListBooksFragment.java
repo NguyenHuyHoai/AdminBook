@@ -12,6 +12,8 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -101,7 +103,38 @@ public class ListBooksFragment extends Fragment {
                 showAddBooksBottomSheet();
             }
         });
+        binding.edSearchBook.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                // Không cần xử lý trước khi thay đổi văn bản
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                // Xử lý khi có thay đổi văn bản
+                String searchText = charSequence.toString().trim().toLowerCase();
+                filterBooksList(searchText);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                // Không cần xử lý sau khi thay đổi văn bản
+            }
+        });
         return view;
+    }
+
+    private void filterBooksList(String searchText) {
+        List<ItemBooks> filteredList = new ArrayList<>();
+        for (ItemBooks booksItem : booksList) {
+            if (booksItem.getTitle().toLowerCase().contains(searchText)) {
+                filteredList.add(booksItem);
+            }
+        }
+
+        // Cập nhật danh sách hiển thị trên RecyclerView
+        adapter.setBooksList(filteredList);
+        adapter.notifyDataSetChanged();
     }
 
     private void showIngormationBottomSheet(ItemBooks booksItem) {

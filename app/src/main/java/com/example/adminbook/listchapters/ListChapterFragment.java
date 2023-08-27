@@ -239,7 +239,8 @@ public class ListChapterFragment extends Fragment {
         }
     }
     private void loadChaptersData() {
-        chaptersCollection.whereEqualTo("booksId", booksId).get()
+        chaptersCollection.whereEqualTo("booksId", booksId)
+                .orderBy("chaptersName", Query.Direction.ASCENDING).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {

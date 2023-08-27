@@ -80,7 +80,6 @@ public class ListGenresFragment extends Fragment {
         });
         return view;
     }
-
     private void filterGenresList(String searchText) {
         List<ItemGenres> filteredList = new ArrayList<>();
         for (ItemGenres genresItem : genresList) {

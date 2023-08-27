@@ -239,7 +239,8 @@ public class AddChapter extends BottomSheetDialogFragment {
     }
     private String getFileNameFromUri(Uri fileUri) {
         String fileName = null;
-        Cursor cursor = getActivity().getContentResolver().query(fileUri, null, null, null, null);
+        Cursor cursor = getActivity().getContentResolver().query(fileUri, null, null,
+                null, null);
         if (cursor != null) {
             int nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
             cursor.moveToFirst();
